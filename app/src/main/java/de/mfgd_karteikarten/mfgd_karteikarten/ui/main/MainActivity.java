@@ -2,6 +2,7 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.main;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.widget.GridView;
 
 import java.util.List;
@@ -21,10 +22,14 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         topicGrid = (GridView) findViewById(R.id.topic_grid);
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
 
         addButton.setOnClickListener(view -> getPresenter().onAddTopicClicked());
+        topicGrid.setOnItemClickListener((parent, view, position, id) -> getPresenter().onPositionClicked(position));
     }
 
     public void setTopics(List<Topic> topics)

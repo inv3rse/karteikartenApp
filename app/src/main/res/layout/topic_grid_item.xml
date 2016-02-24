@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:text="test"
             android:paddingTop="4dp"
             android:paddingBottom="2dp"/>
 
