@@ -9,3 +9,6 @@
 
 .idea/modules.xml
 .idea/gradle.xml
+.idea/.name
+.idea/compiler.xml
+.idea/vcs.xml
