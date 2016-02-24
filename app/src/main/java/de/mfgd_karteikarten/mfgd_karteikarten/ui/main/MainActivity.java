@@ -7,17 +7,14 @@ import android.widget.GridView;
 import java.util.List;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.mvp.PresenterActivity;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
+import nucleus.factory.RequiresPresenter;
+import nucleus.view.NucleusAppCompatActivity;
 
-public class MainActivity extends PresenterActivity<MainPresenter> {
+@RequiresPresenter(MainPresenter.class)
+public class MainActivity extends NucleusAppCompatActivity<MainPresenter> {
 
     private GridView topicGrid;
-
-    @Override
-    protected MainPresenter providePresenter() {
-        return new MainPresenter();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

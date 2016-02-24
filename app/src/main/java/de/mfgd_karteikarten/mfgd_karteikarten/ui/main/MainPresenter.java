@@ -2,11 +2,11 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.main;
 
 import java.util.ArrayList;
 
-import de.mfgd_karteikarten.mfgd_karteikarten.base.mvp.BasePresenter;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
+import nucleus.presenter.Presenter;
 
-public class MainPresenter extends BasePresenter<MainActivity>
+public class MainPresenter extends Presenter<MainActivity>
 {
     private ArrayList<Topic> topics;
 
@@ -36,7 +36,7 @@ public class MainPresenter extends BasePresenter<MainActivity>
         Topic topic = new Topic("test", new ArrayList<>());
         topics.add(topic);
 
-        if(hasView())
+        if(getView() != null)
         {
             getView().setTopics(topics);
         }
