@@ -1,46 +1,63 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.main;
 
-import java.util.ArrayList;
+import android.content.Intent;
 
-import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
+import javax.inject.Inject;
+
+import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.TopicManager;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
-import io.realm.RealmList;
+import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 
 public class MainPresenter extends Presenter<MainActivity> {
-    private ArrayList<Topic> topics;
+    private TopicManager topicManager;
 
-    public MainPresenter() {
-        topics = new ArrayList<>();
-        RealmList<Deck> decks = new RealmList<>();
-
-        for (int i = 1; i < 4; ++i) {
-            Deck deck = new Deck("deck" + i);
-            decks.add(deck);
-        }
-
-        Topic topic = new Topic("test", decks);
-        Topic topic2 = new Topic("abcde", decks);
-        topics.add(topic);
-        topics.add(topic2);
+    @Inject
+    public MainPresenter(TopicManager topicManager) {
+        this.topicManager = topicManager;
     }
 
     @Override
     protected void onTakeView(MainActivity view) {
-        view.setTopics(topics);
+        view.setTopics(topicManager.getTopics());
     }
 
     public void onAddTopicClicked() {
-        Topic topic = new Topic("test", new RealmList<>());
-        topics.add(topic);
+        Topic topic = new Topic("topic " + topicManager.getTopics().size());
+        topicManager.addTopic(topic);
 
-        if (getView() != null) {
-            getView().setTopics(topics);
+        MainActivity view = getView();
+        if (view != null)
+        {
+            getView().setTopics(topicManager.getTopics());
         }
     }
 
     public void onPositionClicked(int position)
     {
+        MainActivity view = getView();
+        if (view != null)
+        {
+            view.startTopicActivity(topicManager.getTopics().get(position).getID());
+        }
+    }
 
+    public static class Factory implements PresenterFactory<MainPresenter>
+    {
+        private App app;
+        public Factory(App app)
+        {
+            this.app = app;
+        }
+
+        @Override
+        public MainPresenter createPresenter()
+        {
+            return DaggerMainComponent.builder()
+                    .appComponent(app.component())
+                    .build()
+                    .getMainPresenter();
+        }
     }
 }

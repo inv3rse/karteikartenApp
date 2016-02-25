@@ -2,8 +2,9 @@ package de.mfgd_karteikarten.mfgd_karteikarten.base;
 
 
 import android.app.Application;
+import android.content.Context;
 
-public class KarteikartenApp extends Application {
+public class App extends Application {
 
     private AppComponent appComponent;
 
@@ -14,8 +15,13 @@ public class KarteikartenApp extends Application {
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
-    public AppComponent getAppComponent()
+    public AppComponent component()
     {
         return appComponent;
+    }
+
+    public static App get(Context context)
+    {
+        return (App) context.getApplicationContext();
     }
 }
