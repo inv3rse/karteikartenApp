@@ -62,7 +62,7 @@ public class TopicAdapter extends BaseAdapter {
 
         topicLayout.removeAllViewsInLayout();
 
-        topicHeader.setText(topic.getTitle());
+        topicHeader.setText(topic.getName());
         for(Deck deck : topic.getDecks())
         {
             Button deckButton = new Button(context);
