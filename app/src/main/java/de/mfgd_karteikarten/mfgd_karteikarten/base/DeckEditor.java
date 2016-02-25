@@ -2,22 +2,24 @@ package de.mfgd_karteikarten.mfgd_karteikarten.base;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
-import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 import io.realm.Realm;
 
-public class DeckEditor {
+public class DeckEditor
+{
     private Realm realm;
     private Deck deck;
-    private int nextID;
+    private int nextID = 1;
 
-    public DeckEditor(Realm realm, Topic topic, Deck deck)
+    public DeckEditor(Realm realm, Deck deck)
     {
         this.realm = realm;
+        this.deck = TopicEditor.getDeck(realm, deck.getID());
 
-        Topic realmTopic = TopicManager.getTopic(realm, topic.getID());
-        this.deck = TopicEditor.getDeck(realmTopic, deck.getID());
-
-        nextID = this.deck.getCards().where().max("ID").intValue() + 1;
+        Number maxId = realm.where(Card.class).max("ID");
+        if (maxId != null)
+        {
+            nextID = maxId.intValue() + 1;
+        }
     }
 
     /**
@@ -72,13 +74,15 @@ public class DeckEditor {
 
     /**
      * Entfernd die Card aus der DB
+     *
      * @param card Card mit ID die entfernt wird
      */
     public void removeCard(Card card)
     {
         realm.beginTransaction();
         Card realmObject = deck.getCards().where().equalTo("ID", card.getId()).findFirst();
-        if (realmObject != null) {
+        if (realmObject != null)
+        {
             realmObject.removeFromRealm();
         }
         realm.commitTransaction();

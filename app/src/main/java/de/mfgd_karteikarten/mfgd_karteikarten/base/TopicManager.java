@@ -16,13 +16,17 @@ import io.realm.RealmResults;
 public class TopicManager {
 
     private Realm realm;
-    private int nextID;
+    private int nextID = 1;
 
     @Inject
     public TopicManager(Realm realm)
     {
         this.realm = realm;
-        nextID = realm.where(Topic.class).max("ID").intValue() + 1;
+        Number maxId = realm.where(Topic.class).max("ID");
+        if (maxId != null)
+        {
+            nextID = maxId.intValue() + 1;
+        }
     }
 
     public Topic addTopic(Topic topic)

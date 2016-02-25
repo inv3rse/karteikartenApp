@@ -1,19 +1,28 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.base;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 import io.realm.Realm;
 
+@ActivityScope
 public class TopicEditor {
     private Realm realm;
     private Topic topic;
+    private int nextID = 1;
 
-    private int nextID;
-
+    @Inject
     public TopicEditor(Realm realm, Topic topic) {
         this.realm = realm;
         this.topic = TopicManager.getTopic(realm, topic.getID());
-        nextID = topic.getDecks().where().max("ID").intValue() + 1;
+        Number maxId = realm.where(Deck.class).max("ID");
+        if (maxId != null)
+        {
+            nextID = maxId.intValue() + 1;
+        }
     }
 
     /**
@@ -30,6 +39,7 @@ public class TopicEditor {
 
         return null;
     }
+
 
     /**
      * Fügt ein neues Deck hinzu. ID wird gesetzt.
@@ -77,12 +87,12 @@ public class TopicEditor {
 
     /**
      * Gibt das Realm Objekt zurück
-     * @param topic Realm Objekt des Topics
+     * @param realm Realm Instanz in der gesucht wird
      * @param id ID des Decks
      * @return Realm Objekt oder null
      */
-    public static Deck getDeck(Topic topic, int id)
+    public static Deck getDeck(Realm realm, int id)
     {
-        return topic.getDecks().where().equalTo("ID", id).findFirst();
+        return realm.where(Deck.class).equalTo("ID", id).findFirst();
     }
 }
