@@ -69,4 +69,15 @@ public class TopicManager {
         RealmResults<Topic> results = realm.where(Topic.class).findAllSorted("name");
         return realm.copyFromRealm(results.subList(0, results.size()));
     }
+
+    /**
+     * Gibt das Realm Objekt hinter der ID zurück
+     * @param realm Realm Instanz in der gesucht wird
+     * @param id ID nach der gesucht wird
+     * @return Realm Object
+     */
+    public static Topic getTopic(Realm realm, int id)
+    {
+        return realm.where(Topic.class).equalTo("ID", id).findFirst();
+    }
 }
