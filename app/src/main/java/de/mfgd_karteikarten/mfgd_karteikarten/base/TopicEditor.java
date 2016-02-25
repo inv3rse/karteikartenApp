@@ -61,6 +61,10 @@ public class TopicEditor {
         realm.commitTransaction();
     }
 
+    /**
+     * Entfernt das Deck aus der DB
+     * @param deck Deck mit ID das entfernt wird
+     */
     public void removeDeck(Deck deck) {
         realm.beginTransaction();
         Deck realmObject = topic.getDecks().where().equalTo("ID", deck.getID()).findFirst();
@@ -71,4 +75,14 @@ public class TopicEditor {
         topic.getDecks().remove(deck);
     }
 
+    /**
+     * Gibt das Realm Objekt zurück
+     * @param topic Realm Objekt des Topics
+     * @param id ID des Decks
+     * @return Realm Objekt oder null
+     */
+    public static Deck getDeck(Topic topic, int id)
+    {
+        return topic.getDecks().where().equalTo("ID", id).findFirst();
+    }
 }
