@@ -40,6 +40,15 @@ public class TopicEditor {
         return null;
     }
 
+    /**
+     * Gibt die Liste aller Decks zurück.
+     * @return Liste aller Decks.
+     */
+    public List<Deck> getDecks()
+    {
+        return realm.copyFromRealm(topic.getDecks());
+    }
+
 
     /**
      * Fügt ein neues Deck hinzu. ID wird gesetzt.
