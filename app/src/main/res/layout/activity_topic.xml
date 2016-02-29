@@ -21,6 +21,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <Button
+            android:id="@+id/learn_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/learn_all"/>
