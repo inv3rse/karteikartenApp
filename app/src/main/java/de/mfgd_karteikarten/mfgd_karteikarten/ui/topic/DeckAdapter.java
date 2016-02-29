@@ -141,12 +141,14 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View view;
         public TextView nameView;
+        public TextView numCards;
         public CheckBox checkBox;
 
         public ViewHolder(View view) {
             super(view);
             this.view = view;
             this.nameView = (TextView) view.findViewById(R.id.deck_name);
+            this.numCards = (TextView) view.findViewById(R.id.deck_num_cards);
             this.checkBox = (CheckBox) view.findViewById(R.id.selection_checkbox);
         }
     }

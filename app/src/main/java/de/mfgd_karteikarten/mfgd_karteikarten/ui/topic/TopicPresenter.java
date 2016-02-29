@@ -41,11 +41,13 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         TopicActivity view = getView();
         if (view != null) {
             ArrayList<Integer> deckIds = new ArrayList<>();
-            for (Deck deck : editor.getDecks())
-            {
+            for (Deck deck : editor.getDecks()) {
                 deckIds.add(deck.getID());
             }
-            view.startCardAskActivity(deckIds);
+
+            if (!deckIds.isEmpty()) {
+                view.startCardAskActivity(deckIds);
+            }
         }
     }
 
@@ -62,7 +64,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
 
     /**
      * Die Activity stoppt mit selection.
-     * Methode dient zum sicheren speichern der Auswahl.
+     * Methode dient zum speichern der Auswahl.
      */
     public void closeWithSelection(HashSet<Integer> selection) {
         savedSelection = selection;

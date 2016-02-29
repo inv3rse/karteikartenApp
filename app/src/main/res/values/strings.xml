@@ -9,4 +9,7 @@
     <string name="RatingButton2">✓</string>
     <string name="num_cards">Cards: %1$d</string>
     <string name="learn_selected">learn selected</string>
+    <string name="topic_name">Topic Name</string>
+    <string name="dialog_ok">ok</string>
+    <string name="dialog_cancel">cancel</string>
 </resources>
