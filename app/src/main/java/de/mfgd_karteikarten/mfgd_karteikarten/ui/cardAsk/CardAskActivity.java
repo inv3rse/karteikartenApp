@@ -27,10 +27,20 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         setContentView(R.layout.activity_card_ask);
 
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey(CARDASK_EXTRA_CARDS)) {
-            ArrayList<Integer> cards = extras.getIntegerArrayList(CARDASK_EXTRA_CARDS);
-            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), cards));
-        } else {
+
+        ArrayList<Integer> ids =  extras.getIntegerArrayList(CARDASK_EXTRA_CARDS);
+        boolean cards = true;
+        if (ids == null)
+        {
+            cards = false;
+            ids =  extras.getIntegerArrayList(CARDASK_EXTRA_DECKS);
+        }
+
+        if (ids != null)
+        {
+            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards));
+        }
+        else {
             Log.e("CardaskActivity", "gestartet ohne Cardask als Extra");
             finish();
         }
@@ -48,6 +58,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         antwortEditText.setVisibility(View.VISIBLE);
 
         bewertenButton1.setOnClickListener(v -> getPresenter().fertigpositv());
+        bewertenButton2.setOnClickListener(v -> getPresenter().fertigpositv());
 
     }
 
@@ -57,5 +68,6 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     public void setAnswer(Card card) {
         fragenstellen.setText(card.getAnswer());
     }
+
 
 }

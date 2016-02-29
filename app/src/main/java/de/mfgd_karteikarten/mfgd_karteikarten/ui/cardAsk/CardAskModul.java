@@ -6,15 +6,17 @@ import java.util.List;
 import dagger.Module;
 import dagger.Provides;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.DeckEditor;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
+import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import io.realm.Realm;
 
 @Module
 public class CardAskModul {
-    List<Integer> cards;
+    List<Integer> ids;
+    boolean cards;
 
-    public CardAskModul(List<Integer> cards) {
+    public CardAskModul(List<Integer> ids, boolean cards) {
+        this.ids = ids;
         this.cards = cards;
     }
 
@@ -22,14 +24,30 @@ public class CardAskModul {
     @ActivityScope
     public List<Card> provideCards(Realm realm) {
         List<Card> cards = new ArrayList<>();
-        for (int cardID : this.cards)
+
+        for (int id : this.ids)
         {
-            Card card = realm.where(Card.class).equalTo("ID", cardID).findFirst();
-            if(card != null)
+            if (this.cards)
             {
-                cards.add(realm.copyFromRealm(card));
+                Card card = realm.where(Card.class).equalTo("ID", id).findFirst();
+                if(card != null)
+                {
+                    cards.add(realm.copyFromRealm(card));
+                }
+            }
+            else
+            {
+                Deck deck = realm.where(Deck.class).equalTo("ID", id).findFirst();
+                if(deck != null)
+                {
+                    for (Card card : deck.getCards())
+                    {
+                        cards.add(realm.copyFromRealm(card));
+                    }
+                }
             }
         }
+
         return cards;
     }
 }
