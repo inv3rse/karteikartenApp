@@ -1,0 +1,71 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/toolbar_default"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
+        <TextView
+            android:id="@+id/FrageText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/FrageText" />
+
+        <EditText
+            android:id="@+id/FrageStellen"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:hint="@string/FrageText"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/AntworText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/AntwortText" />
+
+        <EditText
+            android:id="@+id/AntwortEdit"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:hint="@string/AntwortEditText"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bewertenButton1"
+                android:layout_width="130dp"
+                android:layout_height="80dp"
+                android:text="@string/RatingButton1" />
+
+            <Button
+                android:id="@+id/zeigAntowrtButton"
+                android:layout_width="130dp"
+                android:layout_height="80dp"
+                android:text="@string/zeigeDieAntwortButton" />
+
+            <Button
+                android:id="@+id/bewertenButton2"
+                android:layout_width="130dp"
+                android:layout_height="80dp"
+                android:text="@string/RatingButton2" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

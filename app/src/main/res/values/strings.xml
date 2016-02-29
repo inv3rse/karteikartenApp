@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">mfgd-karteikarten</string>
     <string name="learn_all">learn all</string>
+    <string name="FrageText">Frage:</string>
+    <string name="AntwortText">Antwort:</string>
+    <string name="zeigeDieAntwortButton">Zeig!</string>
+    <string name="AntwortEditText">AntwortEditText</string>
+    <string name="RatingButton1">X</string>
+    <string name="RatingButton2">✓</string>
     <string name="num_cards">Cards: %1$d</string>
     <string name="learn_selected">learn selected</string>
 </resources>
