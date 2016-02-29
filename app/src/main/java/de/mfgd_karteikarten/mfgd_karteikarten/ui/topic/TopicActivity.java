@@ -1,5 +1,6 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,9 +16,10 @@ import java.util.List;
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
+import de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk.CardAskActivity;
 import nucleus.view.NucleusAppCompatActivity;
 
-public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements DeckAdapter.OnSelectionModeChanged {
+public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> {
     public static final String TOPIC_EXTRA = "TOPIC_EXTRA";
 
     private DeckAdapter adapter;
@@ -41,7 +43,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         setSupportActionBar(toolbar);
 
         adapter = new DeckAdapter();
-        adapter.setSelectionModeChangedListener(this);
+        adapter.setSelectionModeChangedListener(this::setLearnButtonAction);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.decklist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,6 +57,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         });
 
         learnButton = (Button) findViewById(R.id.learn_button);
+        setLearnButtonAction(false);
     }
 
     public void setDecks(List<Deck> decks) {
@@ -65,8 +68,10 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         adapter.setSelection(selection);
     }
 
-    public void startCardAskActivity(List<Deck> decks) {
-        ArrayList<Deck> decksParam = new ArrayList<>(decks);
+    public void startCardAskActivity(ArrayList<Integer> deckIds) {
+        Intent intent = new Intent(this, CardAskActivity.class);
+        intent.putIntegerArrayListExtra(CardAskActivity.CARDASK_EXTRA_DECKS, deckIds);
+        startActivity(intent);
     }
 
     @Override
@@ -75,8 +80,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         super.onPause();
     }
 
-    @Override
-    public void onSelectionModeChanged(boolean inSelectionMode) {
+    private void setLearnButtonAction(boolean inSelectionMode)
+    {
         if (inSelectionMode) {
             learnButton.setText(R.string.learn_selected);
             learnButton.setOnClickListener(v -> getPresenter().learnSelected(adapter.getSeletion()));

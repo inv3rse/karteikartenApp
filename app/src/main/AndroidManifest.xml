@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".ui.topic.TopicActivity">
         </activity>
+        <activity android:name=".ui.cardAsk.CardAskActivity">
+        </activity>
     </application>
 
 </manifest>

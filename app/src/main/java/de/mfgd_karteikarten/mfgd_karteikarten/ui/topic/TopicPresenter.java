@@ -40,18 +40,23 @@ public class TopicPresenter extends Presenter<TopicActivity> {
     public void learnAll() {
         TopicActivity view = getView();
         if (view != null) {
-            view.startCardAskActivity(editor.getDecks());
+            ArrayList<Integer> deckIds = new ArrayList<>();
+            for (Deck deck : editor.getDecks())
+            {
+                deckIds.add(deck.getID());
+            }
+            view.startCardAskActivity(deckIds);
         }
     }
 
     public void learnSelected(HashSet<Integer> selection) {
         TopicActivity view = getView();
         if (view != null) {
-            ArrayList<Deck> decks = new ArrayList<>();
+            ArrayList<Integer> deckIds = new ArrayList<>();
             for (int pos : selection) {
-                decks.add(this.decks.get(pos));
+                deckIds.add(decks.get(pos).getID());
             }
-            view.startCardAskActivity(decks);
+            view.startCardAskActivity(deckIds);
         }
     }
 
