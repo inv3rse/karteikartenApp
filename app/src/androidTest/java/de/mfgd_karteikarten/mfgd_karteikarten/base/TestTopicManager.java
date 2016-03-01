@@ -52,6 +52,8 @@ public class TestTopicManager
 
         Topic copyOfTopic = topicManager.getTopics().get(0);
         assertEquals(copyOfTopic.getName(), "Test Topic");
+
+        assertNotNull(copyOfTopic.getDecks());
     }
 
     @Test

@@ -5,14 +5,15 @@ import io.realm.annotations.PrimaryKey;
 
 public class Card extends RealmObject {
 
+    public static final int UNKNOWN_ID = -1;
+
     @PrimaryKey
-    private int id;
+    private int id = UNKNOWN_ID;
     private int rating;
     private String answer;
     private String question;
 
-    public Card()
-    {
+    public Card() {
 
     }
 

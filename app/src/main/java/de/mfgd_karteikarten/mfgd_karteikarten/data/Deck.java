@@ -5,8 +5,10 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Deck extends RealmObject {
+    public static final int UNKNOWN_ID = -1;
+
     @PrimaryKey
-    private int ID;
+    private int ID = UNKNOWN_ID;
     private String name;
     private RealmList<Card> cards;
 

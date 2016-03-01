@@ -15,12 +15,14 @@ public class Topic extends RealmObject
 
     public Topic()
     {
+        name = "";
         decks = new RealmList<>();
     }
 
     public Topic(String name)
     {
         this.name = name;
+        decks = new RealmList<>();
     }
 
     public int getID()
