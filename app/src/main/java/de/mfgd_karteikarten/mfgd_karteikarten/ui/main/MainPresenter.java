@@ -30,7 +30,7 @@ public class MainPresenter extends Presenter<MainActivity> {
         MainActivity view = getView();
         if (view != null)
         {
-            getView().setTopics(topicManager.getTopics());
+            getView().addTopic(topic);
         }
     }
 
