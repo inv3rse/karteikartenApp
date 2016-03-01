@@ -8,7 +8,7 @@ import nucleus.view.NucleusAppCompatActivity;
 public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> {
 
     public static final String DECK_EXTRA = "DECK_EXTRA";
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
