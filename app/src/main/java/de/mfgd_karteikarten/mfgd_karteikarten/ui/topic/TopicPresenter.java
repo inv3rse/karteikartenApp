@@ -37,6 +37,17 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         editor.addDeck(deck);
     }
 
+    public void deleteDecks(HashSet<Integer> selection)
+    {
+        for (int i = decks.size() -1; i >= 0; --i)
+        {
+            if (selection.contains(i))
+            {
+                editor.removeDeck(decks.remove(i));
+            }
+        }
+    }
+
     public void learnAll() {
         TopicActivity view = getView();
         if (view != null) {

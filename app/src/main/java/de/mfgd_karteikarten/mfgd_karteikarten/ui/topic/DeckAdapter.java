@@ -16,10 +16,11 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 
 public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
 
-    private OnSelectionModeChanged selectionModeChangedListener;
+    private OnSelectionChanged selectionChangedListener;
     private boolean showSelection;
     private List<Deck> decks;
     private HashSet<Integer> selection;
+
     public DeckAdapter() {
         selection = new HashSet<>();
         decks = new ArrayList<>();
@@ -85,11 +86,6 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         return decks.get(position);
     }
 
-    void removeDeck(int position) {
-        decks.remove(position);
-        notifyItemRemoved(position);
-    }
-
     public void toogleSelection(int position) {
         if (selection.contains(position)) {
             selection.remove(position);
@@ -101,6 +97,8 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         } else {
             notifyItemChanged(position);
         }
+
+        notifySelectionChanged();
     }
 
     public HashSet<Integer> getSeletion() {
@@ -111,31 +109,46 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         if (this.showSelection != showSelection) {
             this.showSelection = showSelection;
             notifyDataSetChanged();
+        }
+    }
 
-            if (selectionModeChangedListener != null) {
-                selectionModeChangedListener.onSelectionModeChanged(showSelection);
+    public void deleteSelection() {
+        for (int i = decks.size() - 1; i >= 0; --i) {
+            if (selection.contains(i)) {
+                decks.remove(i);
+                notifyItemRemoved(i);
             }
         }
+        clearSelection();
     }
 
     public void clearSelection() {
         selection.clear();
         showSelection(false);
+
+        notifySelectionChanged();
         notifyDataSetChanged();
     }
 
     public void setSelection(HashSet<Integer> selection) {
         this.selection = selection;
-        showSelection = !selection.isEmpty();
-        notifyDataSetChanged();
+
+        showSelection(!selection.isEmpty());
+        notifySelectionChanged();
     }
 
-    public void setSelectionModeChangedListener(OnSelectionModeChanged selectionModeChangedListener) {
-        this.selectionModeChangedListener = selectionModeChangedListener;
+    private void notifySelectionChanged() {
+        if (selectionChangedListener != null) {
+            selectionChangedListener.onSelectionChanged(selection);
+        }
     }
 
-    public interface OnSelectionModeChanged {
-        void onSelectionModeChanged(boolean inSelectionMode);
+    public void setSelectionChangedListener(OnSelectionChanged selectionChangedListener) {
+        this.selectionChangedListener = selectionChangedListener;
+    }
+
+    public interface OnSelectionChanged {
+        void onSelectionChanged(HashSet<Integer> selection);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,13 +26,14 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk.CardAskActivity;
 import nucleus.view.NucleusAppCompatActivity;
 
-public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> {
+public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements ActionMode.Callback {
     public static final String TOPIC_EXTRA = "TOPIC_EXTRA";
     private static final String KEY_TOPIC_DIALOG_VISIBLE = "TOPIC_DIALOG_VISIBLE";
     private static final String KEY_TOPIC_DIALOG_NAME = "TOPIC_DIALOG_NAME";
 
     private DeckAdapter adapter;
     private Button learnButton;
+    private ActionMode actionMode = null;
     private boolean createTopicDialogVisible = false;
     private EditText topicName = null;
 
@@ -58,7 +63,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> {
         setSupportActionBar(toolbar);
 
         adapter = new DeckAdapter();
-        adapter.setSelectionModeChangedListener(this::setLearnButtonAction);
+        adapter.setSelectionChangedListener(this::onSelectionChanged);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.decklist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -100,6 +105,20 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> {
         super.onSaveInstanceState(outState);
     }
 
+    private void onSelectionChanged(HashSet<Integer> selection) {
+        setLearnButtonAction(!selection.isEmpty());
+
+        if (!selection.isEmpty()) {
+            if (actionMode == null) {
+                actionMode = startSupportActionMode(this);
+            }
+
+            actionMode.setTitle(getString(R.string.selection_title, selection.size()));
+        } else if (actionMode != null) {
+            actionMode.finish();
+        }
+    }
+
     private void setLearnButtonAction(boolean inSelectionMode) {
         if (inSelectionMode) {
             learnButton.setText(R.string.learn_selected);
@@ -117,15 +136,43 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.topic_name)
                 .setView(topicName)
-                .setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     createTopicDialogVisible = false;
                     Deck deck = new Deck(topicName.getText().toString());
                     getPresenter().addDeck(deck);
                     adapter.addDeck(deck);
                 })
-                .setNegativeButton(R.string.dialog_cancel, (dialog, which) -> createTopicDialogVisible = false)
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> createTopicDialogVisible = false)
                 .create();
 
         alertDialog.show();
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.topic_activity_context, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        if (item.getItemId() == R.id.delete_action) {
+            getPresenter().deleteDecks(adapter.getSeletion());
+            adapter.deleteSelection();
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        this.adapter.clearSelection();
+        this.actionMode = null;
     }
 }
