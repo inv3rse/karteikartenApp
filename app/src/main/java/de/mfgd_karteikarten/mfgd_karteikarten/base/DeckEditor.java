@@ -2,16 +2,20 @@ package de.mfgd_karteikarten.mfgd_karteikarten.base;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import io.realm.Realm;
 
+@ActivityScope
 public class DeckEditor
 {
     private Realm realm;
     private Deck deck;
     private int nextID = 1;
 
+    @Inject
     public DeckEditor(Realm realm, Deck deck)
     {
         this.realm = realm;
