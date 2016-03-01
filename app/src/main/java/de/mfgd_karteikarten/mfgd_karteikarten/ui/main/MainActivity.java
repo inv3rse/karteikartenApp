@@ -48,6 +48,8 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> {
         topicAdapter.addTopic(topic);
     }
 
+
+
     public void startTopicActivity(int topicId) {
         Intent intent = new Intent(this, TopicActivity.class);
         intent.putExtra(TopicActivity.TOPIC_EXTRA, topicId);
