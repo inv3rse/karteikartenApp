@@ -27,7 +27,10 @@ public class TopicPresenter extends Presenter<TopicActivity> {
     @Override
     protected void onTakeView(TopicActivity topicActivity) {
         decks = editor.getDecks();
+
+        topicActivity.setTopicName(editor.getTopicName());
         topicActivity.setDecks(decks);
+
         if (savedSelection != null) {
             topicActivity.setSelection(savedSelection);
         }
@@ -37,12 +40,9 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         editor.addDeck(deck);
     }
 
-    public void deleteDecks(HashSet<Integer> selection)
-    {
-        for (int i = decks.size() -1; i >= 0; --i)
-        {
-            if (selection.contains(i))
-            {
+    public void deleteDecks(HashSet<Integer> selection) {
+        for (int i = decks.size() - 1; i >= 0; --i) {
+            if (selection.contains(i)) {
                 editor.removeDeck(decks.remove(i));
             }
         }

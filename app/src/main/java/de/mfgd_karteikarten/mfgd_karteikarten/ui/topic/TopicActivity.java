@@ -36,6 +36,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     private ActionMode actionMode = null;
     private boolean createTopicDialogVisible = false;
     private EditText topicName = null;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
             }
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         adapter = new DeckAdapter();
@@ -74,6 +75,11 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
 
         learnButton = (Button) findViewById(R.id.learn_button);
         setLearnButtonAction(false);
+    }
+
+    public void setTopicName(String name)
+    {
+        toolbar.setTitle(name);
     }
 
     public void setDecks(List<Deck> decks) {
@@ -134,7 +140,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         topicName = new EditText(this);
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.topic_name)
+                .setTitle(R.string.deck_name)
                 .setView(topicName)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     createTopicDialogVisible = false;
@@ -142,7 +148,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                     getPresenter().addDeck(deck);
                     adapter.addDeck(deck);
                 })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> createTopicDialogVisible = false)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setOnCancelListener(dialog -> createTopicDialogVisible = false)
                 .create();
 
         alertDialog.show();

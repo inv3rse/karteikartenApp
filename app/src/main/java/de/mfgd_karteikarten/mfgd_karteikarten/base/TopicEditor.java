@@ -25,6 +25,11 @@ public class TopicEditor {
         }
     }
 
+    public String getTopicName()
+    {
+        return topic.getName();
+    }
+
     /**
      * Gibt das Deck mit id zurück
      *
