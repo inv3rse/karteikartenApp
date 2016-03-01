@@ -12,4 +12,5 @@
     <string name="deck_name">Deck Name</string>
     <string name="delete_action">delete</string>
     <string name="selection_title">%1$d selected</string>
+    <string name="action_edit">edit</string>
 </resources>

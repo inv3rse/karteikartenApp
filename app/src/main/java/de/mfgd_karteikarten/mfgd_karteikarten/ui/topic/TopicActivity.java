@@ -29,14 +29,17 @@ import nucleus.view.NucleusAppCompatActivity;
 
 public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements ActionMode.Callback {
     public static final String TOPIC_EXTRA = "TOPIC_EXTRA";
-    private static final String KEY_TOPIC_DIALOG_VISIBLE = "TOPIC_DIALOG_VISIBLE";
-    private static final String KEY_TOPIC_DIALOG_NAME = "TOPIC_DIALOG_NAME";
+    private static final String KEY_DECK_DIALOG_VISIBLE = "TOPIC_DIALOG_VISIBLE";
+    private static final String KEY_DECK_DIALOG_NAME = "TOPIC_DIALOG_NAME";
+    private static final String KEY_DECK_DIALOG_ID = "TOPIC_DIALOG_ID";
 
     private DeckAdapter adapter;
     private Button learnButton;
     private ActionMode actionMode = null;
     private boolean createTopicDialogVisible = false;
     private EditText topicName = null;
+    private int deckId;
+    private boolean isMultipleSelection;
     private Toolbar toolbar;
 
     @Override
@@ -54,10 +57,11 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         }
 
         if (savedInstanceState != null) {
-            createTopicDialogVisible = savedInstanceState.getBoolean(KEY_TOPIC_DIALOG_VISIBLE);
+            createTopicDialogVisible = savedInstanceState.getBoolean(KEY_DECK_DIALOG_VISIBLE);
+            deckId = savedInstanceState.getInt(KEY_DECK_DIALOG_ID, Deck.UNKNOWN_ID);
             if (createTopicDialogVisible) {
-                showCreateTopicDialog();
-                topicName.setText(savedInstanceState.getString(KEY_TOPIC_DIALOG_NAME, ""));
+                showCreateTopicDialog(deckId);
+                topicName.setText(savedInstanceState.getString(KEY_DECK_DIALOG_NAME, ""));
             }
         }
 
@@ -73,14 +77,13 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.add_fab);
-        actionButton.setOnClickListener(v -> showCreateTopicDialog());
+        actionButton.setOnClickListener(v -> showCreateTopicDialog(Deck.UNKNOWN_ID));
 
         learnButton = (Button) findViewById(R.id.learn_button);
         setLearnButtonAction(false);
     }
 
-    public void setTopicName(String name)
-    {
+    public void setTopicName(String name) {
         toolbar.setTitle(name);
     }
 
@@ -88,8 +91,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         adapter.setDecks(decks);
     }
 
-    public void addDeck(Deck deck)
-    {
+    public void addDeck(Deck deck) {
         adapter.addDeck(deck);
     }
 
@@ -103,8 +105,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         startActivity(intent);
     }
 
-    public void startDeckActivity(int deckId)
-    {
+    public void startDeckActivity(int deckId) {
         Intent intent = new Intent(this, DeckActivity.class);
         intent.putExtra(DeckActivity.DECK_EXTRA, deckId);
         startActivity(intent);
@@ -112,15 +113,16 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
 
     @Override
     protected void onPause() {
-        getPresenter().closeWithSelection(adapter.getSeletion());
+        getPresenter().closeWithSelection(adapter.getSelection());
         super.onPause();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(KEY_TOPIC_DIALOG_VISIBLE, createTopicDialogVisible);
+        outState.putBoolean(KEY_DECK_DIALOG_VISIBLE, createTopicDialogVisible);
         if (createTopicDialogVisible) {
-            outState.putString(KEY_TOPIC_DIALOG_NAME, topicName.getText().toString());
+            outState.putString(KEY_DECK_DIALOG_NAME, topicName.getText().toString());
+            outState.putInt(KEY_DECK_DIALOG_ID, deckId);
         }
         super.onSaveInstanceState(outState);
     }
@@ -128,9 +130,14 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     private void onSelectionChanged(HashSet<Integer> selection) {
         setLearnButtonAction(!selection.isEmpty());
 
+        boolean wasMultiple = isMultipleSelection;
+        isMultipleSelection = selection.size() > 1;
+
         if (!selection.isEmpty()) {
             if (actionMode == null) {
                 actionMode = startSupportActionMode(this);
+            } else if (wasMultiple != isMultipleSelection) {
+                actionMode.invalidate();
             }
 
             actionMode.setTitle(getString(R.string.selection_title, selection.size()));
@@ -142,14 +149,15 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     private void setLearnButtonAction(boolean inSelectionMode) {
         if (inSelectionMode) {
             learnButton.setText(R.string.learn_selected);
-            learnButton.setOnClickListener(v -> getPresenter().learnSelected(adapter.getSeletion()));
+            learnButton.setOnClickListener(v -> getPresenter().learnSelected(adapter.getSelection()));
         } else {
             learnButton.setText(R.string.learn_all);
             learnButton.setOnClickListener(v -> getPresenter().learnAll());
         }
     }
 
-    private void showCreateTopicDialog() {
+    private void showCreateTopicDialog(int deckId) {
+        this.deckId = deckId;
         createTopicDialogVisible = true;
         topicName = new EditText(this);
 
@@ -158,7 +166,11 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 .setView(topicName)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     createTopicDialogVisible = false;
-                    getPresenter().addDeck(topicName.getText().toString());
+                    if (deckId != Deck.UNKNOWN_ID) {
+                        getPresenter().renameDeck(deckId, topicName.getText().toString());
+                    } else {
+                        getPresenter().addDeck(topicName.getText().toString());
+                    }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .setOnCancelListener(dialog -> createTopicDialogVisible = false)
@@ -171,18 +183,31 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.topic_activity_context, menu);
+
         return true;
     }
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        return false;
+        menu.getItem(0).setVisible(!isMultipleSelection);
+        return true;
     }
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        if (item.getItemId() == R.id.delete_action) {
-            getPresenter().deleteDecks(adapter.getSeletion());
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                getPresenter().deleteDecks(adapter.getSelection());
+                return true;
+            case R.id.action_edit:
+                if (adapter.getSelection().size() == 1) {
+                    int pos = adapter.getSelection().iterator().next();
+                    Deck deck = adapter.getDeck(pos);
+                    showCreateTopicDialog(deck.getID());
+                    topicName.setText(deck.getName());
+                    return true;
+                }
+                break;
         }
 
         return false;

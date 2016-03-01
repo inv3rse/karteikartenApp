@@ -36,20 +36,29 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
-    public void addDeck(String name)
-    {
+    public void addDeck(String name) {
         Deck deck = new Deck(name);
         editor.addDeck(deck);
 
         TopicActivity view = getView();
-        if (view != null)
-        {
+        if (view != null) {
             view.addDeck(deck);
         }
     }
 
-    public void deleteDecks(HashSet<Integer> positions)
-    {
+    public void renameDeck(int deckId, String name) {
+        Deck deck = editor.getDeck(deckId);
+        deck.setName(name);
+        editor.setDeck(deck);
+        decks = editor.getDecks();
+
+        TopicActivity view = getView();
+        if (view != null) {
+            view.setDecks(decks);
+        }
+    }
+
+    public void deleteDecks(HashSet<Integer> positions) {
         for (int i = decks.size() - 1; i >= 0; --i) {
             if (positions.contains(i)) {
                 editor.removeDeck(decks.remove(i));
@@ -57,8 +66,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
 
         TopicActivity view = getView();
-        if (view != null)
-        {
+        if (view != null) {
             view.setDecks(decks);
         }
     }
@@ -88,11 +96,9 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
-    public void showDeck(int position)
-    {
+    public void showDeck(int position) {
         TopicActivity view = getView();
-        if (view != null)
-        {
+        if (view != null) {
             view.startDeckActivity(decks.get(position).getID());
         }
     }
