@@ -1,5 +1,6 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +20,15 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
     private OnSelectionChanged selectionChangedListener;
     private OnItemClicked itemClickedListener;
 
+    private Context context;
     private boolean showSelection;
     private List<Deck> decks;
     private HashSet<Integer> selection;
 
-    public DeckAdapter() {
-        selection = new HashSet<>();
-        decks = new ArrayList<>();
+    public DeckAdapter(Context context) {
+        this.selection = new HashSet<>();
+        this.decks = new ArrayList<>();
+        this.context = context;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Deck deck = decks.get(position);
         holder.nameView.setText(deck.getName());
+        holder.numCards.setText(context.getString(R.string.num_cards, deck.getCards().size()));
 
         if (showSelection) {
             holder.checkBox.setVisibility(View.VISIBLE);

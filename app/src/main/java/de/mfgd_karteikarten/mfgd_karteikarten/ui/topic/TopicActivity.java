@@ -64,7 +64,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        adapter = new DeckAdapter();
+        adapter = new DeckAdapter(this);
         adapter.setSelectionChangedListener(this::onSelectionChanged);
         adapter.setItemClickedListener(position -> getPresenter().showDeck(position));
 

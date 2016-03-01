@@ -14,11 +14,13 @@ public class Deck extends RealmObject {
 
     public Deck()
     {
-
+        name = "";
+        cards = new RealmList<>();
     }
     public Deck(String name)
     {
         this.name = name;
+        cards = new RealmList<>();
     }
 
     public int getID() {

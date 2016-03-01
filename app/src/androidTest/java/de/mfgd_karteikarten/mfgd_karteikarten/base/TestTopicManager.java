@@ -42,6 +42,8 @@ public class TestTopicManager
         Topic topic1 = new Topic("Test Topic");
         Topic topic2 = new Topic("Test Topic 2");
 
+        assertNotNull(topic1.getDecks());
+
         assertEquals(Topic.UNKNOWN_ID, topic1.getID());
         assertTrue(topicManager.getTopics().isEmpty());
 

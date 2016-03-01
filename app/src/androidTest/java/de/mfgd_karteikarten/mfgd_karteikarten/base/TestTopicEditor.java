@@ -42,6 +42,8 @@ public class TestTopicEditor {
         Deck deck1 = new Deck("deck1");
         Deck deck2 = new Deck("deck2");
 
+        assertNotNull(deck1.getCards());
+
         topicEditor.addDeck(deck1);
         deck2 = topicEditor.addDeck(deck2);
 
