@@ -59,14 +59,14 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         holder.view.setOnLongClickListener(v ->
         {
             showSelection(true);
-            toogleSelection(position);
+            toggleSelection(position);
             return true;
         });
 
         holder.view.setOnClickListener(v ->
         {
             if (showSelection) {
-                toogleSelection(position);
+                toggleSelection(position);
             } else if (itemClickedListener != null) {
                 itemClickedListener.onItemClicked(position);
             }
@@ -96,7 +96,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         return decks.get(position);
     }
 
-    public void toogleSelection(int position) {
+    public void toggleSelection(int position) {
         if (selection.contains(position)) {
             selection.remove(position);
         } else {
@@ -111,7 +111,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         notifySelectionChanged();
     }
 
-    public HashSet<Integer> getSeletion() {
+    public HashSet<Integer> getSelection() {
         return selection;
     }
 
