@@ -24,6 +24,7 @@ import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk.CardAskActivity;
+import de.mfgd_karteikarten.mfgd_karteikarten.ui.deck.DeckActivity;
 import nucleus.view.NucleusAppCompatActivity;
 
 public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements ActionMode.Callback {
@@ -65,6 +66,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
 
         adapter = new DeckAdapter();
         adapter.setSelectionChangedListener(this::onSelectionChanged);
+        adapter.setItemClickedListener(position -> getPresenter().showDeck(position));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.decklist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -93,6 +95,13 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     public void startCardAskActivity(ArrayList<Integer> deckIds) {
         Intent intent = new Intent(this, CardAskActivity.class);
         intent.putIntegerArrayListExtra(CardAskActivity.CARDASK_EXTRA_DECKS, deckIds);
+        startActivity(intent);
+    }
+
+    public void startDeckActivity(int deckId)
+    {
+        Intent intent = new Intent(this, DeckActivity.class);
+        intent.putExtra(DeckActivity.DECK_EXTRA, deckId);
         startActivity(intent);
     }
 

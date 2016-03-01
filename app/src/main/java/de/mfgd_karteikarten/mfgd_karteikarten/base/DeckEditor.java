@@ -28,6 +28,11 @@ public class DeckEditor
         }
     }
 
+    public String getDeckName()
+    {
+        return deck.getName();
+    }
+
     /**
      * Gibt die Card mit id zurück
      *

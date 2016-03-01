@@ -73,6 +73,15 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
+    public void showDeck(int position)
+    {
+        TopicActivity view = getView();
+        if (view != null)
+        {
+            view.startDeckActivity(decks.get(position).getID());
+        }
+    }
+
     /**
      * Die Activity stoppt mit selection.
      * Methode dient zum speichern der Auswahl.

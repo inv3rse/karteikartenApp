@@ -17,6 +17,8 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
 
     private OnSelectionChanged selectionChangedListener;
+    private OnItemClicked itemClickedListener;
+
     private boolean showSelection;
     private List<Deck> decks;
     private HashSet<Integer> selection;
@@ -61,6 +63,8 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         {
             if (showSelection) {
                 toogleSelection(position);
+            } else if (itemClickedListener != null) {
+                itemClickedListener.onItemClicked(position);
             }
         });
     }
@@ -147,8 +151,16 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         this.selectionChangedListener = selectionChangedListener;
     }
 
+    public void setItemClickedListener(OnItemClicked itemClickedListener) {
+        this.itemClickedListener = itemClickedListener;
+    }
+
     public interface OnSelectionChanged {
         void onSelectionChanged(HashSet<Integer> selection);
+    }
+
+    public interface OnItemClicked {
+        void onItemClicked(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
