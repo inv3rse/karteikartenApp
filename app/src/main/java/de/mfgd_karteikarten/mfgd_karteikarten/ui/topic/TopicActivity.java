@@ -88,6 +88,11 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         adapter.setDecks(decks);
     }
 
+    public void addDeck(Deck deck)
+    {
+        adapter.addDeck(deck);
+    }
+
     public void setSelection(HashSet<Integer> selection) {
         adapter.setSelection(selection);
     }
@@ -153,9 +158,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 .setView(topicName)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     createTopicDialogVisible = false;
-                    Deck deck = new Deck(topicName.getText().toString());
-                    getPresenter().addDeck(deck);
-                    adapter.addDeck(deck);
+                    getPresenter().addDeck(topicName.getText().toString());
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .setOnCancelListener(dialog -> createTopicDialogVisible = false)
@@ -180,7 +183,6 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         if (item.getItemId() == R.id.delete_action) {
             getPresenter().deleteDecks(adapter.getSeletion());
-            adapter.deleteSelection();
         }
 
         return false;

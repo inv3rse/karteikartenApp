@@ -36,15 +36,30 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
-    public void addDeck(Deck deck) {
+    public void addDeck(String name)
+    {
+        Deck deck = new Deck(name);
         editor.addDeck(deck);
+
+        TopicActivity view = getView();
+        if (view != null)
+        {
+            view.addDeck(deck);
+        }
     }
 
-    public void deleteDecks(HashSet<Integer> selection) {
+    public void deleteDecks(HashSet<Integer> positions)
+    {
         for (int i = decks.size() - 1; i >= 0; --i) {
-            if (selection.contains(i)) {
+            if (positions.contains(i)) {
                 editor.removeDeck(decks.remove(i));
             }
+        }
+
+        TopicActivity view = getView();
+        if (view != null)
+        {
+            view.setDecks(decks);
         }
     }
 

@@ -82,7 +82,9 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         this.decks = decks;
         selection.clear();
         showSelection = false;
+
         notifyDataSetChanged();
+        notifySelectionChanged();
     }
 
     void addDeck(Deck deck) {
@@ -118,16 +120,6 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
             this.showSelection = showSelection;
             notifyDataSetChanged();
         }
-    }
-
-    public void deleteSelection() {
-        for (int i = decks.size() - 1; i >= 0; --i) {
-            if (selection.contains(i)) {
-                decks.remove(i);
-                notifyItemRemoved(i);
-            }
-        }
-        clearSelection();
     }
 
     public void clearSelection() {
