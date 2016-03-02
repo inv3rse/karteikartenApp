@@ -51,6 +51,12 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if(getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
+
         adapter = new CardAdapter(this);
         adapter.setSelectionChangedListener(this::onSelectionChanged);
 
@@ -63,6 +69,20 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
 
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        switch (itemId)
+        {
+            case android.R.id.home:
+                this.finish();
+                break;
+
+        }
+        return true;
     }
 
     public void setDeckName(String name)
