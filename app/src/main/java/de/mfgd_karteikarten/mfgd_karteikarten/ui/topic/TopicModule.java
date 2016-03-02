@@ -3,7 +3,7 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 import dagger.Module;
 import dagger.Provides;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.TopicManager;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicManager;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 
 @Module

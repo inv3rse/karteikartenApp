@@ -6,18 +6,23 @@ import java.util.List;
 import dagger.Module;
 import dagger.Provides;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.learn.LearnAssistant;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.learn.LearnInterface;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.learn.TestAssistant;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import io.realm.Realm;
 
 @Module
-public class CardAskModul {
+public class CardAskModule {
     List<Integer> ids;
     boolean cards;
+    boolean testMode;
 
-    public CardAskModul(List<Integer> ids, boolean cards) {
+    public CardAskModule(List<Integer> ids, boolean cards, boolean testMode) {
         this.ids = ids;
         this.cards = cards;
+        this.testMode = testMode;
     }
 
     @Provides
@@ -49,5 +54,19 @@ public class CardAskModul {
         }
 
         return cards;
+    }
+
+    @Provides
+    @ActivityScope
+    public LearnInterface provideLearnAssistant(Realm realm, List<Card> cards)
+    {
+        if (testMode)
+        {
+            return new TestAssistant(cards);
+        }
+        else
+        {
+            return new LearnAssistant(realm, cards);
+        }
     }
 }

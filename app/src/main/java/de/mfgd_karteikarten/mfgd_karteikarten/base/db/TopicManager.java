@@ -1,4 +1,4 @@
-package de.mfgd_karteikarten.mfgd_karteikarten.base;
+package de.mfgd_karteikarten.mfgd_karteikarten.base.db;
 
 
 import android.support.annotation.Nullable;

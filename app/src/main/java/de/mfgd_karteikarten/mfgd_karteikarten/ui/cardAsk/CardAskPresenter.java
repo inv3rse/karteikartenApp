@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.learn.LearnInterface;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.LearnAssistant;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 
@@ -15,12 +15,12 @@ import nucleus.presenter.Presenter;
 @ActivityScope
 public class CardAskPresenter extends Presenter<CardAskActivity> {
 
-    private LearnAssistant learnAssistant;
+    private LearnInterface learnAssistant;
     private Card card;
     private boolean isAnswerVisible;
 
     @Inject
-    public CardAskPresenter(LearnAssistant learnAssistant)
+    public CardAskPresenter(LearnInterface learnAssistant)
     {
         this.learnAssistant = learnAssistant;
         isAnswerVisible = false;
@@ -42,10 +42,11 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         cardAskActivity.setAnswerVisible(isAnswerVisible);
     }
 
-    public void fertigpositv()
+    public void gradeCard(boolean positive)
     {
         isAnswerVisible = false;
-        learnAssistant.gradePositive();
+        learnAssistant.gradeCurrentCard(positive);
+
         if (learnAssistant.hasNextCard())
         {
             card = learnAssistant.getNextCard();
@@ -55,23 +56,6 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
                 cardAskActivity.setQuestion(card);
                 cardAskActivity.setAnswer(card);
                 cardAskActivity.setAnswerVisible(false);
-            }
-        }
-    }
-
-    public void fertignegativ()
-    {
-        isAnswerVisible = false;
-        learnAssistant.bewerteNegativ();
-        if (learnAssistant.hasNextCard())
-        {
-                card = learnAssistant.getNextCard();
-                CardAskActivity cardAskActivity = getView();
-                if (cardAskActivity != null)
-                {
-                    cardAskActivity.setQuestion(card);
-                    cardAskActivity.setAnswer(card);
-                    cardAskActivity.setAnswerVisible(false);
             }
         }
     }
@@ -92,11 +76,13 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         private App app;
         private List<Integer> ids;
         private boolean decks;
+        private boolean testMode;
 
-        public Factory(App app, List<Integer> ids, boolean decks)
+        public Factory(App app, List<Integer> ids, boolean decks, boolean testMode)
         {
             this.app = app;
             this.ids = ids;
+            this.testMode = testMode;
         }
 
         @Override
@@ -104,7 +90,7 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         {
             return DaggerCardAskComponent.builder()
                     .appComponent(app.component())
-                    .cardAskModul(new CardAskModul(ids, decks))
+                    .cardAskModule(new CardAskModule(ids, decks, testMode))
                     .build()
                     .getCardAskPresenter();
         }

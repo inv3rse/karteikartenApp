@@ -8,6 +8,7 @@ import org.junit.rules.TemporaryFolder;
 import java.io.IOException;
 import java.util.List;
 
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicManager;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

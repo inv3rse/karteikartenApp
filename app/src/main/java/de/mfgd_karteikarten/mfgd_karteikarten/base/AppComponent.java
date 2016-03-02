@@ -5,7 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import de.mfgd_karteikarten.mfgd_karteikarten.ui.main.MainPresenter;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicManager;
 import io.realm.Realm;
 
 @Singleton

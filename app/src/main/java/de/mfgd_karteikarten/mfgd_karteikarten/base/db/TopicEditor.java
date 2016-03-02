@@ -1,9 +1,10 @@
-package de.mfgd_karteikarten.mfgd_karteikarten.base;
+package de.mfgd_karteikarten.mfgd_karteikarten.base.db;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 import io.realm.Realm;

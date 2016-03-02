@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.TopicEditor;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicEditor;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;

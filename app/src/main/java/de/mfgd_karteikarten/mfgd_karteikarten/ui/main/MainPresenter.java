@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.TopicManager;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicManager;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
