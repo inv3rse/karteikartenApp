@@ -23,7 +23,7 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
         setContentView(R.layout.activity_card_edit);
 
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey(DECK_EXTRA))
+        if (extras != null && extras.containsKey(DECK_EXTRA))
         {
             int deckId = extras.getInt(DECK_EXTRA);
             int cardId = extras.getInt(CARD_EXTRA, Card.UNKNOWN_ID);

@@ -61,7 +61,7 @@ public class LearnAssistant implements LearnInterface {
             {
                 currentCard.setRating(currentCard.getRating() + 1);
             }
-            if (currentCard.getId() != Card.UNKNOWN_ID)
+            if (currentCard.getID() != Card.UNKNOWN_ID)
             {
                 realm.copyToRealmOrUpdate(currentCard);
             }

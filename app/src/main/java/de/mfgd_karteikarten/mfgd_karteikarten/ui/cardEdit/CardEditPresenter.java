@@ -56,7 +56,7 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
     public void saveCard(String question, String answer)
     {
         updateCard(question, answer);
-        if (card.getId() != Card.UNKNOWN_ID)
+        if (card.getID() != Card.UNKNOWN_ID)
         {
             deckEditor.setCard(card);
         }

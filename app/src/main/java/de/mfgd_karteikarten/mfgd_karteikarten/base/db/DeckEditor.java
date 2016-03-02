@@ -59,7 +59,7 @@ public class DeckEditor
      */
     public Card addCard(Card card)
     {
-        card.setId(nextID);
+        card.setID(nextID);
         nextID += 1;
 
         realm.beginTransaction();
@@ -86,7 +86,7 @@ public class DeckEditor
     public void setCard(Card card)
     {
         realm.beginTransaction();
-        Card oldCard = deck.getCards().where().equalTo("ID", card.getId()).findFirst();
+        Card oldCard = deck.getCards().where().equalTo("ID", card.getID()).findFirst();
         oldCard.setAnswer(card.getAnswer());
         oldCard.setQuestion(card.getQuestion());
         oldCard.setRating(card.getRating());
@@ -101,7 +101,7 @@ public class DeckEditor
     public void removeCard(Card card)
     {
         realm.beginTransaction();
-        Card realmObject = deck.getCards().where().equalTo("ID", card.getId()).findFirst();
+        Card realmObject = deck.getCards().where().equalTo("ID", card.getID()).findFirst();
         if (realmObject != null)
         {
             realmObject.removeFromRealm();
