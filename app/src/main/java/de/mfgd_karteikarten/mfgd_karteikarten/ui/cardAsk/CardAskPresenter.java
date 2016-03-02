@@ -36,8 +36,7 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
     protected void onTakeView(CardAskActivity cardAskActivity) {
 
         if (card != null) {
-            cardAskActivity.setQuestion(card);
-            cardAskActivity.setAnswer(card);
+            cardAskActivity.setCard(card);
             cardAskActivity.setAnswerVisible(isAnswerVisible);
         } else {
             cardAskActivity.showFinishedDialog();
@@ -53,8 +52,7 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         if (learnAssistant.hasNextCard()) {
             card = learnAssistant.getNextCard();
             if (cardAskActivity != null) {
-                cardAskActivity.setQuestion(card);
-                cardAskActivity.setAnswer(card);
+                cardAskActivity.setCard(card);
                 cardAskActivity.setAnswerVisible(false);
             }
         } else {
@@ -84,6 +82,7 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
             this.app = app;
             this.ids = ids;
             this.testMode = testMode;
+            this.decks = decks;
         }
 
         @Override

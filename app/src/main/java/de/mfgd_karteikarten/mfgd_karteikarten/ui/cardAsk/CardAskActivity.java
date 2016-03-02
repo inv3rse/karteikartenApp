@@ -2,13 +2,10 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,15 +14,14 @@ import java.util.ArrayList;
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
-import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import nucleus.view.NucleusAppCompatActivity;
 
 public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> {
 
     public static final String CARDASK_EXTRA_DECKS = "CARDASK_EXTRA_DECKS";
     public static final String CARDASK_EXTRA_CARDS = "CARDASK_EXTRA_CARDS";
-    private TextView fragenstellen;
-    private TextView antwortEditText;
+    private TextView frageText;
+    private TextView antwortText;
     private Button zeigeAntwortButton;
     private Button bewertenButton1;
     private Button bewertenButton2;
@@ -56,8 +52,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragenstellen = (TextView) findViewById(R.id.FrageStellen);
-        antwortEditText = (TextView) findViewById(R.id.AntwortEdit);
+        frageText = (TextView) findViewById(R.id.FrageStellen);
+        antwortText = (TextView) findViewById(R.id.AntwortEdit);
         imageView = (ImageView) findViewById(R.id.smiley);
         zeigeAntwortButton = (Button) findViewById(R.id.zeigAnwortButton);
         bewertenButton1 = (Button) findViewById(R.id.bewertenButton1);
@@ -68,12 +64,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         zeigeAntwortButton.setOnClickListener(v -> getPresenter().zeigeAntwort());
     }
 
-    public void setQuestion(Card card) {
-        fragenstellen.setText(card.getQuestion());
-    }
-
-    public void setAnswer(Card card) {
-        fragenstellen.setText(card.getAnswer());
+    public void setCard(Card card)
+    {
+        frageText.setText(card.getQuestion());
+        antwortText.setText(card.getAnswer());
     }
 
     public void setAnswerVisible(boolean answerVisible) {
@@ -81,13 +75,13 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             bewertenButton1.setVisibility(View.VISIBLE);
             bewertenButton2.setVisibility(View.VISIBLE);
             zeigeAntwortButton.setVisibility(View.GONE);
-            antwortEditText.setVisibility(View.VISIBLE);
+            antwortText.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
         } else {
             bewertenButton1.setVisibility(View.GONE);
             bewertenButton2.setVisibility(View.GONE);
             zeigeAntwortButton.setVisibility(View.VISIBLE);
-            antwortEditText.setVisibility(View.INVISIBLE);
+            antwortText.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.GONE);
         }
     }
