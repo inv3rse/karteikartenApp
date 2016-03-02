@@ -43,7 +43,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         }
 
         if (ids != null) {
-            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards, false));
+            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards, true));
         } else {
             Log.e("CardaskActivity", "gestartet ohne Cardask als Extra");
             finish();
