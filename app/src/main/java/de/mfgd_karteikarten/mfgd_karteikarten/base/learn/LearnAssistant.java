@@ -40,7 +40,7 @@ public class LearnAssistant implements LearnInterface {
             } while (j > cards.get(i).getRating());
         }
 
-        currentCard = cards.get(cardIndexes.get(random.nextInt(cardIndexes.size() - 1)));
+        currentCard = cards.get(cardIndexes.get(random.nextInt(cardIndexes.size())));
         return currentCard;
     }
 
@@ -63,7 +63,9 @@ public class LearnAssistant implements LearnInterface {
             }
             if (currentCard.getID() != Card.UNKNOWN_ID)
             {
+                realm.beginTransaction();
                 realm.copyToRealmOrUpdate(currentCard);
+                realm.commitTransaction();
             }
             else
             {

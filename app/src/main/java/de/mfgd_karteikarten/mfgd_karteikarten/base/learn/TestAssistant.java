@@ -24,7 +24,7 @@ public class TestAssistant implements LearnInterface {
 
     @Override
     public Card getNextCard() {
-        currentCard = cards.remove(random.nextInt(cards.size() - 1));
+        currentCard = cards.remove(random.nextInt(cards.size()));
         return currentCard;
     }
 

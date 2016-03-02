@@ -27,10 +27,8 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         if (learnAssistant.hasNextCard()) {
             this.card = learnAssistant.getNextCard();
         } else {
-            // card = null;
-            card = new Card();
-            card.setQuestion("Question");
-            card.setAnswer("Answer");
+            card = null;
+
         }
     }
 
