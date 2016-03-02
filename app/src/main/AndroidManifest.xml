@@ -16,9 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.topic.TopicActivity"></activity>
-        <activity android:name=".ui.cardAsk.CardAskActivity"></activity>
-        <activity android:name=".ui.deck.DeckActivity"></activity>
+        <activity android:name=".ui.topic.TopicActivity" />
+        <activity android:name=".ui.cardAsk.CardAskActivity" />
+        <activity android:name=".ui.deck.DeckActivity" />
+        <activity android:name=".ui.cardEdit.CardEditActivity"></activity>
     </application>
 
 </manifest>
