@@ -3,7 +3,7 @@
     <string name="learn_all">learn all</string>
     <string name="FrageText">Question:</string>
     <string name="AntwortText">Answer:</string>
-    <string name="zeigeDieAntwortButton">Show me answer please!</string>
+    <string name="zeigeDieAntwortButton">Show answer!</string>
     <string name="AntwortEditText">AnswerEditText</string>
     <string name="RatingButton1">X</string>
     <string name="RatingButton2">✓</string>

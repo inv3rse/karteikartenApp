@@ -20,74 +20,76 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
     private boolean isAnswerVisible;
 
     @Inject
-    public CardAskPresenter(LearnInterface learnAssistant)
-    {
+    public CardAskPresenter(LearnInterface learnAssistant) {
         this.learnAssistant = learnAssistant;
         isAnswerVisible = false;
 
-        card = new Card();
-        card.setQuestion("eine frage");
-        card.setAnswer("eine antwort");
         if (learnAssistant.hasNextCard()) {
             this.card = learnAssistant.getNextCard();
+        } else {
+            // card = null;
+            card = new Card();
+            card.setQuestion("Question");
+            card.setAnswer("Answer");
         }
     }
 
     @Override
     protected void onTakeView(CardAskActivity cardAskActivity) {
 
-        cardAskActivity.setQuestion(card);
-        cardAskActivity.setAnswer(card);
+        if (card != null) {
+            cardAskActivity.setQuestion(card);
+            cardAskActivity.setAnswer(card);
+            cardAskActivity.setAnswerVisible(isAnswerVisible);
+        } else {
+            cardAskActivity.showFinishedDialog();
+        }
 
-        cardAskActivity.setAnswerVisible(isAnswerVisible);
     }
 
-    public void gradeCard(boolean positive)
-    {
+    public void gradeCard(boolean positive) {
+        CardAskActivity cardAskActivity = getView();
         isAnswerVisible = false;
         learnAssistant.gradeCurrentCard(positive);
 
-        if (learnAssistant.hasNextCard())
-        {
+        if (learnAssistant.hasNextCard()) {
             card = learnAssistant.getNextCard();
-            CardAskActivity cardAskActivity = getView();
-            if (cardAskActivity != null)
-            {
+            if (cardAskActivity != null) {
                 cardAskActivity.setQuestion(card);
                 cardAskActivity.setAnswer(card);
                 cardAskActivity.setAnswerVisible(false);
             }
+        } else {
+            card = null;
+            if (cardAskActivity != null) {
+                cardAskActivity.showFinishedDialog();
+            }
         }
     }
 
-    public void zeigeAntwort()
-    {
+    public void zeigeAntwort() {
         isAnswerVisible = true;
         CardAskActivity view = getView();
-        if (view != null)
-        {
+        if (view != null) {
             view.setAnswerVisible(true);
         }
     }
 
 
-    public static class Factory implements PresenterFactory<CardAskPresenter>
-    {
+    public static class Factory implements PresenterFactory<CardAskPresenter> {
         private App app;
         private List<Integer> ids;
         private boolean decks;
         private boolean testMode;
 
-        public Factory(App app, List<Integer> ids, boolean decks, boolean testMode)
-        {
+        public Factory(App app, List<Integer> ids, boolean decks, boolean testMode) {
             this.app = app;
             this.ids = ids;
             this.testMode = testMode;
         }
 
         @Override
-        public CardAskPresenter createPresenter()
-        {
+        public CardAskPresenter createPresenter() {
             return DaggerCardAskComponent.builder()
                     .appComponent(app.component())
                     .cardAskModule(new CardAskModule(ids, decks, testMode))
