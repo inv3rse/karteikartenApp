@@ -79,7 +79,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(dialogInput)
-                .setTitle("ADD TOPIC")
+                .setTitle(topicId == Topic.UNKNOWN_ID? "ADD TOPIC" : "EDIT TOPIC")
                 .setMessage("Type in the name of the topic.")
                 .setIcon(R.drawable.ic_my_add_24dp)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {

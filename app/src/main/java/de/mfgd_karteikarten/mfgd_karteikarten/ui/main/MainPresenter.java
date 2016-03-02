@@ -106,7 +106,7 @@ public class MainPresenter extends Presenter<MainActivity> {
     public void onPositionClicked(int position) {
         MainActivity view = getView();
         if (view != null) {
-            view.startTopicActivity(topicManager.getTopics().get(position).getID());
+            view.startTopicActivity(topics.get(position).getID());
         }
     }
 
