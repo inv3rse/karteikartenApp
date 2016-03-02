@@ -42,7 +42,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return cards.size();
     }
 
@@ -89,6 +90,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
         notifyDataSetChanged();
     }
 
+    //löschen wenn CardEdit implementiert
     void addCard(Card card)
     {
         cards.add(card);
