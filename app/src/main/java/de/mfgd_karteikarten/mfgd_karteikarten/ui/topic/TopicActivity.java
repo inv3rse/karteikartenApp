@@ -68,6 +68,11 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if(getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         adapter = new DeckAdapter(this);
         adapter.setSelectionChangedListener(this::onSelectionChanged);
         adapter.setItemClickedListener(position -> getPresenter().showDeck(position));
@@ -125,6 +130,19 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
             outState.putInt(KEY_DECK_DIALOG_ID, deckId);
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home)
+        {
+            finish();
+            return true;
+        }
+
+        return false;
     }
 
     private void onSelectionChanged(HashSet<Integer> selection) {

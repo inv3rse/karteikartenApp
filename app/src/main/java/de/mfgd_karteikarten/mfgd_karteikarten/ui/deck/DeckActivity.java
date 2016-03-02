@@ -54,7 +54,6 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
         if(getSupportActionBar() != null)
         {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
 
         adapter = new CardAdapter(this);
@@ -66,9 +65,6 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
 
         FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.add_card);
         actionButton.setOnClickListener(v -> getPresenter().addCard(deckId));
-
-
-
     }
 
     @Override
