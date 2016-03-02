@@ -67,6 +67,8 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
         FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.add_card);
         actionButton.setOnClickListener(v -> getPresenter().addCard(deckId));
 
+
+
     }
 
     public void setDeckName(String name)

@@ -52,7 +52,7 @@ public class DeckPresenter extends Presenter<DeckActivity> {
     public void editCard(int deckId, HashSet<Integer> selection)
     {
         DeckActivity view = getView();
-        int cardId = selection.toArray(new Integer [1])[0];
+        int cardId = cards.get(selection.iterator().next()).getID();
         if(view != null)
         {
         view.startCardEditActivity(deckId, cardId);

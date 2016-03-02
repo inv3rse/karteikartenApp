@@ -18,7 +18,7 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
 {
     private OnSelectionChanged selectionChangedListener;
-    private OnItemClicked itemClickedListener;
+//    private OnItemClicked itemClickedListener;
 
     private Context context;
     private boolean showSelection;
@@ -70,13 +70,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
 
         holder.view.setOnClickListener(v ->
         {
-            if(showSelection)
-            {
-                toggleSelection(position);
-            }else if(itemClickedListener != null)
-            {
-                itemClickedListener.onItemClicked(position);
-            }
+            showSelection(true);
+            toggleSelection(position);
+
         });
     }
 
@@ -88,13 +84,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
 
         notifySelectionChanged();
         notifyDataSetChanged();
-    }
-
-    //löschen wenn CardEdit implementiert
-    void addCard(Card card)
-    {
-        cards.add(card);
-        notifyItemInserted(cards.size() - 1);
     }
 
     Card getCard(int position)
@@ -167,20 +156,20 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
         this.selectionChangedListener = selectionChangedListener;
     }
 
-    public void setItemClickedListener(OnItemClicked itemClickedListener)
-    {
-        this.itemClickedListener = itemClickedListener;
-    }
+//    public void setItemClickedListener(OnItemClicked itemClickedListener)
+//    {
+//        this.itemClickedListener = itemClickedListener;
+//    }
 
     public interface OnSelectionChanged
     {
         void onSelectionChanged(HashSet<Integer> selection);
     }
 
-    public interface OnItemClicked
-    {
-        void onItemClicked(int position);
-    }
+//    public interface OnItemClicked
+//    {
+//        void onItemClicked(int position);
+//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
