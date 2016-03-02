@@ -6,52 +6,83 @@ import javax.inject.Inject;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
+import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.LearnAssistant;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 
+
 @ActivityScope
 public class CardAskPresenter extends Presenter<CardAskActivity> {
 
-    LearnAssistant learnAssistant;
+    private LearnAssistant learnAssistant;
+    private Card card;
+    private boolean isAnswerVisible;
 
     @Inject
     public CardAskPresenter(LearnAssistant learnAssistant)
     {
         this.learnAssistant = learnAssistant;
+        isAnswerVisible = false;
+
+        card = new Card();
+        card.setQuestion("eine frage");
+        card.setAnswer("eine antwort");
+        if (learnAssistant.hasNextCard()) {
+            this.card = learnAssistant.getNextCard();
+        }
     }
 
     @Override
     protected void onTakeView(CardAskActivity cardAskActivity) {
-        if (learnAssistant.hasNextCard())
-        {
-            cardAskActivity.setQuestion(learnAssistant.getNextCard());
-        }
+
+        cardAskActivity.setQuestion(card);
+        cardAskActivity.setAnswer(card);
+
+        cardAskActivity.setAnswerVisible(isAnswerVisible);
     }
 
     public void fertigpositv()
     {
+        isAnswerVisible = false;
         learnAssistant.gradePositive();
         if (learnAssistant.hasNextCard())
         {
+            card = learnAssistant.getNextCard();
             CardAskActivity cardAskActivity = getView();
             if (cardAskActivity != null)
             {
-                cardAskActivity.setQuestion(learnAssistant.getNextCard());
+                cardAskActivity.setQuestion(card);
+                cardAskActivity.setAnswer(card);
+                cardAskActivity.setAnswerVisible(false);
             }
         }
     }
 
     public void fertignegativ()
     {
-        learnAssistant.gradePositive();
+        isAnswerVisible = false;
+        learnAssistant.bewerteNegativ();
         if (learnAssistant.hasNextCard())
         {
-            CardAskActivity cardAskActivity = getView();
-            if (cardAskActivity != null)
-            {
-                cardAskActivity.setQuestion(learnAssistant.getNextCard());
+                card = learnAssistant.getNextCard();
+                CardAskActivity cardAskActivity = getView();
+                if (cardAskActivity != null)
+                {
+                    cardAskActivity.setQuestion(card);
+                    cardAskActivity.setAnswer(card);
+                    cardAskActivity.setAnswerVisible(false);
             }
+        }
+    }
+
+    public void zeigeAntwort()
+    {
+        isAnswerVisible = true;
+        CardAskActivity view = getView();
+        if (view != null)
+        {
+            view.setAnswerVisible(true);
         }
     }
 

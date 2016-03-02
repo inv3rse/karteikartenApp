@@ -69,7 +69,7 @@ public class DeckEditor
     }
 
     /**
-     * Liiefert die Liste aller Karten im Deck.
+     * Liefert die Liste aller Karten im Deck.
      * @return Liste aller Karten
      */
     public List<Card> getCards()
