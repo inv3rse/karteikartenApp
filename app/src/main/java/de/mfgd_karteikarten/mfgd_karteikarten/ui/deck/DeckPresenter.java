@@ -40,17 +40,23 @@ public class DeckPresenter extends Presenter<DeckActivity> {
 
     }
 
-    public void addCard()
+    public void addCard(int deckId)
     {
         DeckActivity view = getView();
-        view.startCardEditActivity();
+        if(view != null)
+        {
+            view.startCardEditActivity(deckId);
+        }
     }
 
     public void editCard(int deckId, HashSet<Integer> selection)
     {
-//        DeckActivity view = getView();
-//        int cardId = selection.toArray(new Integer [1])[0];
-//        view.startCardEditActivity(deckId, cardId);
+        DeckActivity view = getView();
+        int cardId = selection.toArray(new Integer [1])[0];
+        if(view != null)
+        {
+        view.startCardEditActivity(deckId, cardId);
+        }
 
     }
 

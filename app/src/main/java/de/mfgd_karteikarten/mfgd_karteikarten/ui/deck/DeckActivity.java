@@ -65,7 +65,7 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.add_card);
-        actionButton.setOnClickListener(v -> getPresenter().addCard());
+        actionButton.setOnClickListener(v -> getPresenter().addCard(deckId));
 
     }
 
@@ -109,9 +109,10 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
         }
     }
 
-    public void startCardEditActivity()
+    public void startCardEditActivity(int deckId)
     {
         Intent intent = new Intent(this, CardEditActivity.class);
+        intent.putExtra(CardEditActivity.DECK_EXTRA, deckId);
         startActivity(intent);
     }
 
@@ -127,7 +128,7 @@ public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implem
     public boolean onCreateActionMode(ActionMode mode, Menu menu)
     {
         MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.topic_activity_context, menu);
+        inflater.inflate(R.menu.deck_activity_context, menu);
 
         return true;
     }
