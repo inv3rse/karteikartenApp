@@ -1,6 +1,5 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.deck;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,9 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,14 +18,12 @@ import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import de.mfgd_karteikarten.mfgd_karteikarten.ui.cardEdit.CardEditActivity;
-import de.mfgd_karteikarten.mfgd_karteikarten.ui.topic.DeckAdapter;
 import nucleus.view.NucleusAppCompatActivity;
 
 public class DeckActivity extends NucleusAppCompatActivity<DeckPresenter> implements ActionMode.Callback
 {
 
     public static final String DECK_EXTRA = "DECK_EXTRA";
-    public static final String CHECKBOX_VISIBLE = "CHECKBOX_VISIBLE";
 
     private CardAdapter adapter;
     private ActionMode actionMode = null;

@@ -9,7 +9,6 @@ import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.db.DeckEditor;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
-import de.mfgd_karteikarten.mfgd_karteikarten.ui.topic.TopicActivity;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 

@@ -18,7 +18,6 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
 {
     private OnSelectionChanged selectionChangedListener;
-//    private OnItemClicked itemClickedListener;
 
     private Context context;
     private boolean showSelection;
@@ -86,10 +85,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
         notifyDataSetChanged();
     }
 
-    Card getCard(int position)
-    {
-        return cards.get(position);
-    }
 
     public void toggleSelection(int position)
     {
@@ -156,20 +151,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
         this.selectionChangedListener = selectionChangedListener;
     }
 
-//    public void setItemClickedListener(OnItemClicked itemClickedListener)
-//    {
-//        this.itemClickedListener = itemClickedListener;
-//    }
-
     public interface OnSelectionChanged
     {
         void onSelectionChanged(HashSet<Integer> selection);
     }
-
-//    public interface OnItemClicked
-//    {
-//        void onItemClicked(int position);
-//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
