@@ -40,7 +40,7 @@ public class MainPresenter extends Presenter<MainActivity> {
         alertDialog.setView(input);
 
         // Setting Dialog Title
-        alertDialog.setTitle("add topic");
+        alertDialog.setTitle("ADD TOPIC");
 
         // Setting Dialog Message
         alertDialog.setMessage("Type in the name of the new topic.");
@@ -53,6 +53,7 @@ public class MainPresenter extends Presenter<MainActivity> {
             public void onClick(DialogInterface dialog, int which) {
 
                 if (!input.getText().toString().isEmpty()) {
+                    // add the topic with the input text from the dialog
                     Topic topic = new Topic(input.getText().toString());
                     topicManager.addTopic(topic);
                     // Write your code here to invoke YES event
@@ -60,6 +61,7 @@ public class MainPresenter extends Presenter<MainActivity> {
                     update();
                 }
                 if (input.getText().toString().isEmpty()) {
+                    // error when the textfield is free
                     Toast.makeText(getView().getApplicationContext(), "ERROR : The textfield was empty, topics need always a name.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -70,12 +72,12 @@ public class MainPresenter extends Presenter<MainActivity> {
         alertDialog.show();
 
 
-        //Topic topic = new Topic("topic " + topicManager.getTopics().size());
-        //topicManager.addTopic(topic);
+        // update the interface with the new topic
         update();
 
     }
 
+    // update function for the user interface
     private void update() {
         MainActivity view = getView();
         if (view != null) {
