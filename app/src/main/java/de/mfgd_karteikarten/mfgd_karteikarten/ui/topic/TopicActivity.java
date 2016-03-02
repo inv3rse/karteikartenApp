@@ -172,7 +172,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                         getPresenter().addDeck(topicName.getText().toString());
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> createTopicDialogVisible = false)
                 .setOnCancelListener(dialog -> createTopicDialogVisible = false)
                 .create();
 

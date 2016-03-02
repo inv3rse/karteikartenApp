@@ -108,20 +108,6 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.topic_activity_context, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        menu.getItem(0).setVisible(!isMultipleSelection);
-        return true;
-    }
-
     private void onSelectionChanged(HashSet<Integer> selection) {
         boolean wasMultiple = isMultipleSelection;
         isMultipleSelection = selection.size() > 1;
@@ -142,19 +128,34 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
     }
 
     @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.topic_activity_context, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        menu.getItem(0).setVisible(!isMultipleSelection);
+        return true;
+    }
+
+    @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
                 getPresenter().deleteSelection(this);
-                return true;
+                break;
             case R.id.action_edit:
                 if (topicAdapter.getSelection().size() == 1) {
                     getPresenter().editSelected(this);
                 }
                 break;
+            default:
+                return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override
