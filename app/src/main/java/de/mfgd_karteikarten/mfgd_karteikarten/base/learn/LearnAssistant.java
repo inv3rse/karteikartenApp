@@ -46,11 +46,6 @@ public class LearnAssistant implements LearnInterface {
 
     @Override
     public Card shuffleCard() {
-        if (currentCard != null)
-        {
-            cards.add(currentCard);
-        }
-
         return getNextCard();
     }
 
