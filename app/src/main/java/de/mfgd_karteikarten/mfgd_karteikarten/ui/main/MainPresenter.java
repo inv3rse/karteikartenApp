@@ -1,14 +1,10 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.main;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicManager;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
@@ -17,64 +13,86 @@ import nucleus.presenter.Presenter;
 
 public class MainPresenter extends Presenter<MainActivity> {
     private TopicManager topicManager;
+    private List<Topic> topics;
+
+    private HashSet<Integer> selection;
+    private boolean dialogVisible;
+    private String dialogText;
+    private int dialogId;
 
     @Inject
     public MainPresenter(TopicManager topicManager) {
         this.topicManager = topicManager;
+        selection = new HashSet<>();
     }
 
     @Override
     protected void onTakeView(MainActivity view) {
-        view.setTopics(topicManager.getTopics());
+        topics = topicManager.getTopics();
+        view.setTopics(topics);
+        view.setSelection(selection);
+
+        if (dialogVisible)
+        {
+            view.showCreateEditDialog(dialogId, dialogText);
+        }
     }
 
-    public void onAddTopicClicked() {
+    public void onAddTopicClicked(MainActivity view) {
+        dialogVisible = true;
+        dialogId = Topic.UNKNOWN_ID;
+        view.showCreateEditDialog(dialogId, "");
+    }
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getView());
+    public void updateDialogStatus(boolean visible, String name)
+    {
+        dialogVisible = visible;
+        dialogText = name;
+    }
 
-        final EditText input = new EditText(getView());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
+    public void addUpdateTopicName(int topicId, String name) {
+        dialogVisible = false;
+        dialogText = "";
 
-        // Setting Dialog Title
-        alertDialog.setTitle("ADD TOPIC");
+        if (topicId != Topic.UNKNOWN_ID) {
+            Topic topic = topicManager.getTopic(topicId);
+            topic.setName(name);
+            topicManager.editTopic(topic);
+            update();
+        } else {
+            Topic topic = new Topic(name);
+            topicManager.addTopic(topic);
 
-        // Setting Dialog Message
-        alertDialog.setMessage("Type in the name of the new topic.");
-
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_my_add_24dp);
-
-        // Setting Positive "Yes" Button
-        alertDialog.setPositiveButton("            Create           ", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-                if (!input.getText().toString().isEmpty()) {
-                    // add the topic with the input text from the dialog
-                    Topic topic = new Topic(input.getText().toString());
-                    topicManager.addTopic(topic);
-                    // Write your code here to invoke YES event
-                    Toast.makeText(getView().getApplicationContext(), "Created the topic : " + input.getText().toString(), Toast.LENGTH_LONG).show();
-                    update();
-                }
-                if (input.getText().toString().isEmpty()) {
-                    // error when the textfield is free
-                    Toast.makeText(getView().getApplicationContext(), "ERROR : The textfield was empty, topics need always a name.", Toast.LENGTH_LONG).show();
-                }
+            MainActivity view = getView();
+            if (view != null) {
+                view.addTopic(topic);
             }
-        });
+        }
+    }
 
+    public void updateSelection(HashSet<Integer> selection)
+    {
+        this.selection = selection;
+    }
 
-        // Showing Alert Message
-        alertDialog.show();
+    public void deleteSelection(MainActivity view)
+    {
+        for (int i = topics.size() - 1; i >= 0; --i) {
+            if (selection.contains(i)) {
+                topicManager.removeTopic(topics.remove(i));
+            }
+        }
 
+        view.setTopics(topics);
+    }
 
-        // update the interface with the new topic
-        update();
-
+    public void editSelected(MainActivity view)
+    {
+        if (selection.size() == 1)
+        {
+            Topic topic = topics.get(selection.iterator().next());
+            view.showCreateEditDialog(topic.getID(), topic.getName());
+        }
     }
 
     // update function for the user interface

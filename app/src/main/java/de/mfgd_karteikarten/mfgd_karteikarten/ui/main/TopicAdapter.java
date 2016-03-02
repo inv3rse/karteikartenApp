@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,12 +22,15 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
 
     private Context context;
     private List<Topic> topics;
+    private boolean showSelection;
+    private HashSet<Integer> selection;
 
-    private OnItemClicked onItemClickedListener;
-    private OnSelectionChanged onSelectionChangedListener;
+    private OnItemClicked itemClickedListener;
+    private OnSelectionChanged selectionChangedListener;
 
     public TopicAdapter(Context context) {
         this.context = context;
+        this.selection = new HashSet<>();
         this.topics = new ArrayList<>();
     }
 
@@ -51,10 +55,30 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
             holder.deckLayout.addView(button);
         }
 
-        holder.view.setOnClickListener(v -> {
-            if (onItemClickedListener != null)
-            {
-                onItemClickedListener.onItemClicked(position);
+        if (showSelection) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+            if (selection.contains(position)) {
+                holder.checkBox.setChecked(true);
+            } else {
+                holder.checkBox.setChecked(false);
+            }
+        } else {
+            holder.checkBox.setVisibility(View.GONE);
+        }
+
+        holder.view.setOnLongClickListener(v ->
+        {
+            showSelection(true);
+            toggleSelection(position);
+            return true;
+        });
+
+        holder.view.setOnClickListener(v ->
+        {
+            if (showSelection) {
+                toggleSelection(position);
+            } else if (itemClickedListener != null) {
+                itemClickedListener.onItemClicked(position);
             }
         });
     }
@@ -64,22 +88,77 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         return topics.size();
     }
 
-    public void setTopics(List<Topic> topics) {
+    void setTopics(List<Topic> topics) {
         this.topics = topics;
+        selection.clear();
+        showSelection = false;
+
         notifyDataSetChanged();
+        notifySelectionChanged();
     }
 
-    public void addTopic(Topic topic) {
+    void addTopic(Topic topic) {
         topics.add(topic);
         notifyItemInserted(topics.size() - 1);
     }
 
-    public void setOnItemClickedListener(OnItemClicked onItemClickedListener) {
-        this.onItemClickedListener = onItemClickedListener;
+    Topic getTopic(int position) {
+        return topics.get(position);
     }
 
-    public void setOnSelectionChangedListener(OnSelectionChanged onSelectionChangedListener) {
-        this.onSelectionChangedListener = onSelectionChangedListener;
+    public void toggleSelection(int position) {
+        if (selection.contains(position)) {
+            selection.remove(position);
+        } else {
+            selection.add(position);
+        }
+        if (selection.isEmpty()) {
+            showSelection(false);
+        } else {
+            notifyItemChanged(position);
+        }
+
+        notifySelectionChanged();
+    }
+
+    public HashSet<Integer> getSelection() {
+        return selection;
+    }
+
+    public void showSelection(boolean showSelection) {
+        if (this.showSelection != showSelection) {
+            this.showSelection = showSelection;
+            notifyDataSetChanged();
+        }
+    }
+
+    public void clearSelection() {
+        selection.clear();
+        showSelection(false);
+
+        notifySelectionChanged();
+        notifyDataSetChanged();
+    }
+
+    public void setSelection(HashSet<Integer> selection) {
+        this.selection = selection;
+
+        showSelection(!selection.isEmpty());
+        notifySelectionChanged();
+    }
+
+    private void notifySelectionChanged() {
+        if (selectionChangedListener != null) {
+            selectionChangedListener.onSelectionChanged(selection);
+        }
+    }
+
+    public void setSelectionChangedListener(OnSelectionChanged selectionChangedListener) {
+        this.selectionChangedListener = selectionChangedListener;
+    }
+
+    public void setItemClickedListener(OnItemClicked itemClickedListener) {
+        this.itemClickedListener = itemClickedListener;
     }
 
     public interface OnSelectionChanged {
@@ -94,12 +173,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         public View view;
         public TextView topicName;
         public LinearLayout deckLayout;
+        public CheckBox checkBox;
 
         public ViewHolder(View view) {
             super(view);
             this.view = view;
             this.topicName = (TextView) view.findViewById(R.id.topic_header);
             this.deckLayout = (LinearLayout) view.findViewById(R.id.deck_layout);
+            this.checkBox = (CheckBox) view.findViewById(R.id.topic_checkbox);
         }
     }
 }
