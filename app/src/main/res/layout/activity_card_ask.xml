@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--scrollFlags nur für RecyclerView-->
+    <include
+        layout="@layout/toolbar_default"
+        app:layout_scrollFlags="scroll|enterAlways" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        >
 
         <LinearLayout
 
@@ -20,83 +26,92 @@
             android:orientation="vertical">
 
 
-            <include
-                layout="@layout/toolbar_default"
-                app:layout_scrollFlags="scroll|enterAlways" />
-
-            <TextView
-                android:id="@+id/FrageText"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="@string/FrageText"
-                android:textSize="30sp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp">
 
-            <TextView
-                android:id="@+id/FrageStellen"
-                android:layout_width="match_parent"
-                android:layout_height="165dp"
-                android:hint="@string/FrageText" />
+                <TextView
+                    android:id="@+id/FrageText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/FrageText"
+                    android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/AntworText"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="@string/AntwortText"
-                android:textSize="30dp" />
+                <TextView
+                    android:id="@+id/FrageStellen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/FrageText"
+                    android:layout_marginBottom="10dp"
+                    />
 
-            <TextView
-                android:id="@+id/AntwortEdit"
-                android:layout_width="match_parent"
-                android:layout_height="165dp"
-                android:hint="@string/AntwortEditText"
-                android:text="e" />
+                <TextView
+                    android:id="@+id/AntwortText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/AntwortText"
+                    android:textSize="30sp"
+                    android:layout_marginBottom="10dp"
+                    />
 
+                <TextView
+                    android:id="@+id/AntwortEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/AntwortEditText"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal">
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:background="@android:color/transparent"
+        >
+
 
         <Button
             android:id="@+id/bewertenButton1"
-            android:layout_width="0dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:background="@drawable/pfeil_button1"
+            android:background="@drawable/emoticon_sad"
             android:clickable="true"
-            android:text="@string/RatingButton1"
-            android:textSize="30dp" />
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_alignParentBottom="true"
+            />
 
         <Button
             android:id="@+id/zeigAnwortButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
             android:clickable="true"
             android:text="@string/zeigeDieAntwortButton"
-            android:textSize="25dp" />
+            android:textSize="25sp"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            />
 
-        <ImageView
-            android:id="@+id/smiley"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/smiley" />
 
         <Button
             android:id="@+id/bewertenButton2"
-            android:layout_width="0dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:background="@drawable/pfeil_button2"
+            android:background="@drawable/emoticon_happy"
             android:clickable="true"
-            android:text="@string/RatingButton2"
-            android:textSize="30sp" />
-
-    </LinearLayout>
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            />
+    </RelativeLayout>
 
 
 </LinearLayout>

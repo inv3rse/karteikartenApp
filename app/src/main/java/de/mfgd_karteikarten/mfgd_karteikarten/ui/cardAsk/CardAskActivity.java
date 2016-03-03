@@ -2,10 +2,13 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
+import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import nucleus.view.NucleusAppCompatActivity;
 
 public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> {
@@ -25,7 +29,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     private Button zeigeAntwortButton;
     private Button bewertenButton1;
     private Button bewertenButton2;
-    private ImageView imageView;
+    private TextView antwortHead;
     private Toolbar toolbar;
 
     @Override
@@ -43,7 +47,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         }
 
         if (ids != null) {
-            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards, true));
+            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards, false));
         } else {
             Log.e("CardaskActivity", "gestartet ohne Cardask als Extra");
             finish();
@@ -54,10 +58,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
         frageText = (TextView) findViewById(R.id.FrageStellen);
         antwortText = (TextView) findViewById(R.id.AntwortEdit);
-        imageView = (ImageView) findViewById(R.id.smiley);
         zeigeAntwortButton = (Button) findViewById(R.id.zeigAnwortButton);
         bewertenButton1 = (Button) findViewById(R.id.bewertenButton1);
         bewertenButton2 = (Button) findViewById(R.id.bewertenButton2);
+        antwortHead = (TextView) findViewById(R.id.AntwortText);
 
         bewertenButton1.setOnClickListener(v -> getPresenter().gradeCard(false));
         bewertenButton2.setOnClickListener(v -> getPresenter().gradeCard(true));
@@ -76,13 +80,14 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             bewertenButton2.setVisibility(View.VISIBLE);
             zeigeAntwortButton.setVisibility(View.GONE);
             antwortText.setVisibility(View.VISIBLE);
-            imageView.setVisibility(View.VISIBLE);
+            antwortHead.setVisibility(View.VISIBLE);
+
         } else {
             bewertenButton1.setVisibility(View.GONE);
             bewertenButton2.setVisibility(View.GONE);
             zeigeAntwortButton.setVisibility(View.VISIBLE);
             antwortText.setVisibility(View.INVISIBLE);
-            imageView.setVisibility(View.GONE);
+            antwortHead.setVisibility(View.INVISIBLE);
         }
     }
     public void showFinishedDialog(){
