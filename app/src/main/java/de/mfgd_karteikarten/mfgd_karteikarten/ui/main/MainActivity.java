@@ -142,7 +142,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.topic_activity_context, menu);
+        inflater.inflate(R.menu.main_activity_context, menu);
         return true;
     }
 
