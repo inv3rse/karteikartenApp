@@ -68,8 +68,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null)
-        {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -88,7 +87,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         setLearnButtonAction(false);
     }
 
-    public void setTopicName(String name) {
+    public void setTopicTitle(String name) {
         toolbar.setTitle(name);
     }
 
@@ -104,9 +103,10 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         adapter.setSelection(selection);
     }
 
-    public void startCardAskActivity(ArrayList<Integer> deckIds) {
+    public void startCardAskActivity(ArrayList<Integer> deckIds, boolean inTestMode) {
         Intent intent = new Intent(this, CardAskActivity.class);
         intent.putIntegerArrayListExtra(CardAskActivity.CARDASK_EXTRA_DECKS, deckIds);
+        intent.putExtra(CardAskActivity.CARDASK_EXTRA_LEARNMODE, inTestMode);
         startActivity(intent);
     }
 
@@ -114,6 +114,13 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         Intent intent = new Intent(this, DeckActivity.class);
         intent.putExtra(DeckActivity.DECK_EXTRA, deckId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.topic_activity, menu);
+        return true;
     }
 
     @Override
@@ -133,16 +140,16 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home)
-        {
-            finish();
-            return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_swap:
+                getPresenter().switchMode(this);
+                return true;
         }
-
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     private void onSelectionChanged(HashSet<Integer> selection) {
@@ -227,8 +234,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 }
                 break;
         }
-
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

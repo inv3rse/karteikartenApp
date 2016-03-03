@@ -24,6 +24,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
     public static final String CARDASK_EXTRA_DECKS = "CARDASK_EXTRA_DECKS";
     public static final String CARDASK_EXTRA_CARDS = "CARDASK_EXTRA_CARDS";
+    public static final String CARDASK_EXTRA_LEARNMODE = "CARDASK_EXTRA_LEARNMODE";
+
     private TextView frageText;
     private TextView antwortText;
     private Button zeigeAntwortButton;
@@ -39,6 +41,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
         Bundle extras = getIntent().getExtras();
 
+        boolean learnMode = extras.getBoolean(CARDASK_EXTRA_LEARNMODE, true);
         ArrayList<Integer> ids = extras.getIntegerArrayList(CARDASK_EXTRA_CARDS);
         boolean cards = true;
         if (ids == null) {
@@ -47,7 +50,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         }
 
         if (ids != null) {
-            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards, false));
+            setPresenterFactory(new CardAskPresenter.Factory(App.get(this), ids, cards, learnMode));
         } else {
             Log.e("CardaskActivity", "gestartet ohne Cardask als Extra");
             finish();

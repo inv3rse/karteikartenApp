@@ -18,22 +18,30 @@ public class TopicPresenter extends Presenter<TopicActivity> {
     private TopicEditor editor;
     private List<Deck> decks;
     private HashSet<Integer> savedSelection;
+    private boolean inTestMode;
 
     @Inject
     public TopicPresenter(TopicEditor editor) {
         this.editor = editor;
+        inTestMode = false;
     }
 
     @Override
     protected void onTakeView(TopicActivity topicActivity) {
         decks = editor.getDecks();
 
-        topicActivity.setTopicName(editor.getTopicName());
+        topicActivity.setTopicTitle((inTestMode ? "Exam: " : "Learn: ") + editor.getTopicName());
         topicActivity.setDecks(decks);
 
         if (savedSelection != null) {
             topicActivity.setSelection(savedSelection);
         }
+    }
+
+    public void switchMode(TopicActivity view)
+    {
+        inTestMode = !inTestMode;
+        view.setTopicTitle((inTestMode ? "Exam: " : "Learn: ") + editor.getTopicName());
     }
 
     public void addDeck(String name) {
@@ -80,7 +88,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
             }
 
             if (!deckIds.isEmpty()) {
-                view.startCardAskActivity(deckIds);
+                view.startCardAskActivity(deckIds, inTestMode);
             }
         }
     }
@@ -92,7 +100,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
             for (int pos : selection) {
                 deckIds.add(decks.get(pos).getID());
             }
-            view.startCardAskActivity(deckIds);
+            view.startCardAskActivity(deckIds, inTestMode);
         }
     }
 
