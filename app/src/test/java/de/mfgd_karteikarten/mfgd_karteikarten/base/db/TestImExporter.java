@@ -10,43 +10,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mfgd_karteikarten.mfgd_karteikarten.base.db.ImExporter;
-import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicManager;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
-import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmList;
-import okio.BufferedSource;
-import okio.Okio;
-import okio.Source;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
-public class TestImExporter
-{
+public class TestImExporter {
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
     private ImExporter imExporter;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         imExporter = new ImExporter();
     }
 
     @Test
-    public void testExport() throws IOException
-    {
+    public void testImExport() throws IOException {
         RealmList<Card> cards = new RealmList<>();
-        for (int i = 0; i < 10; ++i)
-        {
+        for (int i = 0; i < 10; ++i) {
             Card card = new Card();
             card.setID(i);
             card.setQuestion("Question " + i);
@@ -66,8 +51,14 @@ public class TestImExporter
         File result = imExporter.exportDecks(decks, testFolder.newFolder());
         assertNotNull(result);
 
-        BufferedSource source = Okio.buffer(Okio.source(result));
-        System.out.println(source.readByteString().utf8());
+        List<Deck> readDecks = imExporter.importDecks(result);
+        assertEquals(decks.size(), readDecks.size());
+
+        for (int i = 0; i < readDecks.size(); ++i) {
+            assertEquals(decks.get(i).getID(), readDecks.get(i).getID());
+            assertEquals(decks.get(i).getName(), readDecks.get(i).getName());
+            assertEquals(decks.get(i).getCards().size(), readDecks.get(i).getCards().size());
+        }
     }
 
 }

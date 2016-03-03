@@ -9,8 +9,12 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
@@ -18,6 +22,7 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import okio.BufferedSink;
+import okio.BufferedSource;
 import okio.Okio;
 
 public class ImExporter
@@ -27,6 +32,13 @@ public class ImExporter
     public ImExporter()
     {
         gson = buildGson();
+    }
+
+    public List<Deck> importDecks(File file) throws IOException {
+        BufferedSource source = Okio.buffer(Okio.source(file));
+        Deck[] decks = gson.fromJson(source.readUtf8(), Deck[].class);
+
+        return Arrays.asList(decks);
     }
 
     public File exportDecks(List<Deck> decks, File dir) throws IOException
@@ -122,6 +134,7 @@ public class ImExporter
                             in.endObject();
                             cards.add(card);
                         }
+                        in.endArray();
 
                         return cards;
                     }
