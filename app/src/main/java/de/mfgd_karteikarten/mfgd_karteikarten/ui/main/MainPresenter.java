@@ -97,9 +97,10 @@ public class MainPresenter extends Presenter<MainActivity> {
 
     // update function for the user interface
     private void update() {
+        topics = topicManager.getTopics();
         MainActivity view = getView();
         if (view != null) {
-            getView().setTopics(topicManager.getTopics());
+            getView().setTopics(topics);
         }
     }
 
