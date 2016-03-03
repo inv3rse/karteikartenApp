@@ -102,9 +102,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         notifyItemInserted(topics.size() - 1);
     }
 
-    Topic getTopic(int position) {
-        return topics.get(position);
-    }
 
     public void toggleSelection(int position) {
         if (selection.contains(position)) {
