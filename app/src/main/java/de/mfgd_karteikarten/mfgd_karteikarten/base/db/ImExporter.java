@@ -43,6 +43,10 @@ public class ImExporter
 
     public File exportDecks(List<Deck> decks, File dir) throws IOException
     {
+        if (!dir.exists() && ! dir.mkdir())
+        {
+            throw new IOException("could not create directory");
+        }
         File file = new File(dir, "deckExport.json");
 
         if (file.exists())

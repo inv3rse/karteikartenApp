@@ -1,13 +1,17 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.ImExporter;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicEditor;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import nucleus.factory.PresenterFactory;
@@ -101,6 +105,24 @@ public class TopicPresenter extends Presenter<TopicActivity> {
                 deckIds.add(decks.get(pos).getID());
             }
             view.startCardAskActivity(deckIds, inTestMode);
+        }
+    }
+
+    public void shareSelected(HashSet<Integer> selection, TopicActivity view)
+    {
+        ImExporter exporter = new ImExporter();
+        ArrayList<Deck> exportDecks = new ArrayList<>();
+
+        for (int index : selection)
+        {
+            exportDecks.add(decks.get(index));
+        }
+
+        try {
+            File exportFile = exporter.exportDecks(exportDecks, new File(view.getFilesDir(), "decks"));
+            view.startShareIntent(exportFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

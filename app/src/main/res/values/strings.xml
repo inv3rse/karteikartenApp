@@ -17,4 +17,5 @@
     <string name="title_answer">Answer</string>
     <string name="title_question">Question</string>
     <string name="change_mode">change mode</string>
+    <string name="share">share</string>
 </resources>

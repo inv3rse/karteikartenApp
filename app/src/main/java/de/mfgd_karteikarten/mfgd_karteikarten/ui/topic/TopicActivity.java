@@ -2,9 +2,11 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.FileProvider;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -114,6 +117,18 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         Intent intent = new Intent(this, DeckActivity.class);
         intent.putExtra(DeckActivity.DECK_EXTRA, deckId);
         startActivity(intent);
+    }
+
+    public void startShareIntent(File file)
+    {
+        Uri contentUri = FileProvider.getUriForFile(this, "de.mfgd_karteikarten.fileprovider", file);
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "deckExport.json");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+        shareIntent.setType("*/*");
+        startActivity(Intent.createChooser(shareIntent, "select share method"));
     }
 
     @Override
@@ -233,6 +248,9 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                     return true;
                 }
                 break;
+            case R.id.action_share:
+                getPresenter().shareSelected(adapter.getSelection(), this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
