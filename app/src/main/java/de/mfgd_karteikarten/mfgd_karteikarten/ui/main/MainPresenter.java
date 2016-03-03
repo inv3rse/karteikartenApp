@@ -23,14 +23,16 @@ public class MainPresenter extends Presenter<MainActivity> {
     @Inject
     public MainPresenter(TopicManager topicManager) {
         this.topicManager = topicManager;
-        selection = new HashSet<>();
+        this.selection = new HashSet<>();
     }
 
     @Override
     protected void onTakeView(MainActivity view) {
+        HashSet<Integer> savedSelection = selection;
         topics = topicManager.getTopics();
+
         view.setTopics(topics);
-        view.setSelection(selection);
+        view.setSelection(savedSelection);
 
         if (dialogVisible)
         {
@@ -58,16 +60,11 @@ public class MainPresenter extends Presenter<MainActivity> {
             Topic topic = topicManager.getTopic(topicId);
             topic.setName(name);
             topicManager.editTopic(topic);
-            update();
         } else {
             Topic topic = new Topic(name);
             topicManager.addTopic(topic);
-
-            MainActivity view = getView();
-            if (view != null) {
-                view.addTopic(topic);
-            }
         }
+        update();
     }
 
     public void updateSelection(HashSet<Integer> selection)
@@ -91,7 +88,8 @@ public class MainPresenter extends Presenter<MainActivity> {
         if (selection.size() == 1)
         {
             Topic topic = topics.get(selection.iterator().next());
-            view.showCreateEditDialog(topic.getID(), topic.getName());
+            dialogId = topic.getID();
+            view.showCreateEditDialog(dialogId, topic.getName());
         }
     }
 

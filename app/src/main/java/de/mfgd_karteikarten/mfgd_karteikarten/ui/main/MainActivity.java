@@ -102,6 +102,18 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
         alertDialog.show();
     }
 
+    @Override
+    protected void onPause() {
+        if (dialogInput != null)
+        {
+            getPresenter().updateDialogStatus(true, dialogInput.getText().toString());
+        }
+        else {
+            getPresenter().updateDialogStatus(false, "");
+        }
+        super.onPause();
+    }
+
     public void startTopicActivity(int topicId) {
         Intent intent = new Intent(this, TopicActivity.class);
         intent.putExtra(TopicActivity.TOPIC_EXTRA, topicId);
