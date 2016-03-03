@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="2dp">
+    card_view:cardElevation="2dp"
+    card_view:cardBackgroundColor="@color/colorBackgroundItem">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,21 +30,23 @@
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:paddingTop="4dp"
-                android:paddingBottom="2dp"/>
+                android:paddingBottom="2dp"
+                android:textColor="@color/colorPrimaryDark"/>
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
+            android:background="@color/colorPrimaryDark"
             android:layout_margin="2dp"/>
 
         <LinearLayout
             android:id="@+id/deck_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="3dp">
         </LinearLayout>
 
     </LinearLayout>

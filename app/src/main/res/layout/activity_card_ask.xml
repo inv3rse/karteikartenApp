@@ -91,10 +91,11 @@
         <Button
             android:id="@+id/zeigAnwortButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="55dp"
             android:clickable="true"
             android:text="@string/zeigeDieAntwortButton"
             android:textSize="25sp"
+            android:layout_margin="5dp"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
             />

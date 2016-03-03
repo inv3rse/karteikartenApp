@@ -23,8 +23,10 @@
         <Button
             android:id="@+id/learn_button"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="@string/learn_all"/>
+            android:layout_height="50dp"
+            android:text="@string/learn_all"
+            android:textSize="25sp"
+            android:layout_margin="5dp"/>
 
     </LinearLayout>
 
