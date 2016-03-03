@@ -119,7 +119,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
 
         try {
-            File exportFile = exporter.exportDecks(exportDecks, new File(view.getFilesDir(), "decks"));
+            File exportFile = exporter.exportDecks(exportDecks, new File(view.getExternalFilesDir(null), "decks"));
             view.startShareIntent(exportFile);
         } catch (IOException e) {
             e.printStackTrace();

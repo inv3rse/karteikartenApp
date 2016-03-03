@@ -121,7 +121,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
 
     public void startShareIntent(File file)
     {
-        Uri contentUri = FileProvider.getUriForFile(this, "de.mfgd_karteikarten.fileprovider", file);
+//        Uri contentUri = FileProvider.getUriForFile(this, "de.mfgd_karteikarten.fileprovider", file);
+        Uri contentUri = Uri.fromFile(file);
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
