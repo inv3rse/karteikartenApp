@@ -27,4 +27,14 @@
         <item name="android:background">@drawable/button</item>
     </style>
 
+    <style name="HeadingStyle">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="TextStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
