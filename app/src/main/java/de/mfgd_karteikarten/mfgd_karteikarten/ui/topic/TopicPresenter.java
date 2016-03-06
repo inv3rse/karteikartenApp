@@ -1,10 +1,11 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,8 +43,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
-    public void switchMode(TopicActivity view)
-    {
+    public void switchMode(TopicActivity view) {
         inTestMode = !inTestMode;
         view.setTopicTitle((inTestMode ? "Exam: " : "Learn: ") + editor.getTopicName());
     }
@@ -108,13 +108,11 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
-    public void shareSelected(HashSet<Integer> selection, TopicActivity view)
-    {
+    public void shareSelected(HashSet<Integer> selection, TopicActivity view) {
         ImExporter exporter = new ImExporter();
         ArrayList<Deck> exportDecks = new ArrayList<>();
 
-        for (int index : selection)
-        {
+        for (int index : selection) {
             exportDecks.add(decks.get(index));
         }
 
@@ -122,6 +120,23 @@ public class TopicPresenter extends Presenter<TopicActivity> {
             File exportFile = exporter.exportDecks(exportDecks, new File(view.getExternalFilesDir(null), "decks"));
             view.startShareIntent(exportFile);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void importDecks(String fileString, TopicActivity view) {
+        File file = new File(fileString);
+        ImExporter importer = new ImExporter();
+        try {
+            List<Deck> importedDecks = importer.importDecks(file);
+
+            for (Deck deck : importedDecks) {
+                editor.addDeck(deck);
+            }
+            decks = editor.getDecks();
+            view.setDecks(decks);
+        } catch (IOException e) {
+            Log.d("TopicPresenter", "failed to import decks");
             e.printStackTrace();
         }
     }

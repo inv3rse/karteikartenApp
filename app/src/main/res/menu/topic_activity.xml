@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_swap"
         android:title="@string/change_mode"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_import"
+        android:icon="@drawable/ic_swap"
+        android:title="@string/import_deck"
+        app:showAsAction="never" />
 </menu>

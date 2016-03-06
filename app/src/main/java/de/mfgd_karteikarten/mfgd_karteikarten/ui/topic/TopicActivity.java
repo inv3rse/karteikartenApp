@@ -1,12 +1,12 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.FileProvider;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.jakewharton.rxbinding.view.RxMenuItem;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,12 +32,15 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk.CardAskActivity;
 import de.mfgd_karteikarten.mfgd_karteikarten.ui.deck.DeckActivity;
 import nucleus.view.NucleusAppCompatActivity;
+import rx.Observable;
 
 public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements ActionMode.Callback {
     public static final String TOPIC_EXTRA = "TOPIC_EXTRA";
     private static final String KEY_DECK_DIALOG_VISIBLE = "TOPIC_DIALOG_VISIBLE";
     private static final String KEY_DECK_DIALOG_NAME = "TOPIC_DIALOG_NAME";
     private static final String KEY_DECK_DIALOG_ID = "TOPIC_DIALOG_ID";
+
+    private static final int REQUEST_FILE = 1;
 
     private DeckAdapter adapter;
     private Button learnButton;
@@ -119,8 +125,13 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         startActivity(intent);
     }
 
-    public void startShareIntent(File file)
-    {
+    public void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("file/*");
+        startActivityForResult(intent, REQUEST_FILE);
+    }
+
+    public void startShareIntent(File file) {
 //        Uri contentUri = FileProvider.getUriForFile(this, "de.mfgd_karteikarten.fileprovider", file);
         Uri contentUri = Uri.fromFile(file);
 
@@ -136,6 +147,17 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.topic_activity, menu);
+
+        Observable<Void> importClicked = RxMenuItem.clicks(menu.getItem(1));
+
+        RxPermissions.getInstance(this)
+                .request(importClicked, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        showFileChooser();
+                    }
+                });
+
         return true;
     }
 
@@ -163,6 +185,9 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 return true;
             case R.id.action_swap:
                 getPresenter().switchMode(this);
+                return true;
+            case R.id.action_import:
+                showFileChooser();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -218,6 +243,15 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 .create();
 
         alertDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
+            getPresenter().importDecks(data.getData().getPath(), this);
+        }
     }
 
     @Override
