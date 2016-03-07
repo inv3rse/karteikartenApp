@@ -24,4 +24,5 @@
     <string name="type_button1">default</string>
     <string name="type_button2">vocabulary</string>
     <string name="type_button3">multiple choice</string>
+    <string name="cardtype">n.a.</string>
 </resources>

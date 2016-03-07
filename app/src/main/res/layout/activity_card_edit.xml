@@ -13,6 +13,7 @@
         android:background="@color/colorPrimary">
 
         <RadioButton
+            android:id="@+id/defaultRButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -21,6 +22,7 @@
             style="@style/RadioButtonStyle"/>
 
         <RadioButton
+            android:id="@+id/vocabRButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,6 +31,7 @@
             style="@style/RadioButtonStyle"/>
 
         <RadioButton
+            android:id="@+id/mcRButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,9 +79,11 @@
 
         <ViewFlipper
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/viewflipper">
 
             <LinearLayout
+                android:id="@+id/defaultvocview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -102,6 +107,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/mcview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">

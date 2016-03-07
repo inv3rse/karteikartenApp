@@ -17,6 +17,7 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
     private static final String KEY_QUESTION = "KEY_QUESTION";
     private static final String KEY_ANSWER = "KEY_ANSWER";
     private static final String KEY_FALSEANSWER = "KEY_FALSEANSWER";
+    private static final String KEY_TYPE = "KEY_TYPE";
 
     private DeckEditor deckEditor;
     private Card card;
@@ -35,6 +36,7 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
             card.setQuestion(savedState.getString(KEY_QUESTION));
             card.setAnswer(savedState.getString(KEY_ANSWER));
             card.setFalseanswer(savedState.getString(KEY_FALSEANSWER));
+            card.setType(savedState.getInt(KEY_TYPE));
         }
     }
 
@@ -43,6 +45,7 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
         state.putString(KEY_ANSWER, card.getAnswer());
         state.putString(KEY_QUESTION, card.getQuestion());
         state.putString(KEY_FALSEANSWER, card.getFalseanswer());
+        state.putInt(KEY_TYPE, card.getType());
     }
 
     @Override
@@ -50,15 +53,24 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
         cardEditActivity.setCard(card);
     }
 
-    public void updateCard(String question, String answer)
+    public void updateCard(int type, String question, String answer, String falseAnswer)
     {
+        card.setType(type);
+        card.setQuestion(question);
+        card.setAnswer(answer);
+        card.setFalseanswer(falseAnswer);
+    }
+
+    public void updateCard(int type, String question, String answer)
+    {
+        card.setType(type);
         card.setQuestion(question);
         card.setAnswer(answer);
     }
 
-    public void saveCard(String question, String answer)
+    public void saveCard(int type, String question, String answer)
     {
-        updateCard(question, answer);
+        updateCard(type, question, answer);
         if (card.getID() != Card.UNKNOWN_ID)
         {
             deckEditor.setCard(card);
@@ -74,6 +86,27 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
             view.closeActivity();
         }
     }
+
+    public void saveCard(int type, String question, String answer, String falseanswer)
+    {
+        updateCard(type, question, answer, falseanswer);
+        if (card.getID() != Card.UNKNOWN_ID)
+        {
+            deckEditor.setCard(card);
+        }
+        else
+        {
+            deckEditor.addCard(card);
+        }
+
+        CardEditActivity view = getView();
+        if (view != null)
+        {
+            view.closeActivity();
+        }
+    }
+
+
 
     static class Factory implements PresenterFactory<CardEditPresenter>
     {

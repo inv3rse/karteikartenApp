@@ -49,8 +49,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        String type;
         Card card = cards.get(position);
+
+        if(card.getType() == 3)
+        {
+            type = "multiple choice";
+        }else if(card.getType() == 2)
+        {
+            type = "vocabulary";
+        }else
+        {
+            type = "default";
+        }
         holder.abbView.setText(card.getQuestion());
+        holder.cardtype.setText("Type: " + type);
 
         if (showSelection)
         {
@@ -160,6 +173,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
     {
         public View view;
         public TextView abbView;
+        public TextView cardtype;
         public CheckBox checkbox;
 
         public ViewHolder(View view)
@@ -167,6 +181,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>
             super(view);
             this.view = view;
             this.abbView = (TextView) view.findViewById(R.id.card_name);
+            this.cardtype = (TextView) view.findViewById(R.id.card_type);
             this.checkbox = (CheckBox) view.findViewById(R.id.card_selection_checkbox);
 
         }

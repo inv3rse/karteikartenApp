@@ -31,7 +31,15 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="18sp"
-                android:text="Card1234"
+                android:text="@string/cardtype"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/card_type"
+                android:text="@string/cardtype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:textColor="@color/colorPrimaryDark"/>
 
         </LinearLayout>

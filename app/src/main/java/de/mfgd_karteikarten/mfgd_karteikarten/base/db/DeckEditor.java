@@ -90,6 +90,8 @@ public class DeckEditor
         oldCard.setAnswer(card.getAnswer());
         oldCard.setQuestion(card.getQuestion());
         oldCard.setRating(card.getRating());
+        oldCard.setType(card.getType());
+        oldCard.setFalseanswer(card.getFalseanswer());
         realm.commitTransaction();
     }
 
