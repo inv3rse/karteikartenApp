@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mfgd-karteikarten</string>
+    <string name="app_name">ICaSy</string>
     <string name="learn_all">learn all</string>
     <string name="FrageText">Question:</string>
     <string name="AntwortText">Answer:</string>
