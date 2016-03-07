@@ -19,4 +19,9 @@
     <string name="change_mode">change mode</string>
     <string name="share">share</string>
     <string name="import_deck">import deck</string>
+    <string name="title_answer_correct">Correct Answer</string>
+    <string name="title_answer_wrong">Wrong Answer</string>
+    <string name="type_button1">default</string>
+    <string name="type_button2">vocabulary</string>
+    <string name="type_button3">multiple choice</string>
 </resources>
