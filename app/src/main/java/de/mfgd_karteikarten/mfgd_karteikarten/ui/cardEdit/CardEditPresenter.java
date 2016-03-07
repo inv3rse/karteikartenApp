@@ -16,6 +16,8 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
 
     private static final String KEY_QUESTION = "KEY_QUESTION";
     private static final String KEY_ANSWER = "KEY_ANSWER";
+    private static final String KEY_FALSEONE = "KEY_FALSEONE";
+    private static final String KEY_FALSETWO = "KEY_FALSETWO";
 
     private DeckEditor deckEditor;
     private Card card;
@@ -33,6 +35,8 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
         {
             card.setQuestion(savedState.getString(KEY_QUESTION));
             card.setAnswer(savedState.getString(KEY_ANSWER));
+//            card.setFalseOne(savedState.getString(KEY_FALSEONE));
+//            card.setFalseTwo(savedState.getString(KEY_FALSETWO));
         }
     }
 
@@ -40,6 +44,8 @@ public class CardEditPresenter extends Presenter<CardEditActivity> {
     public void save(Bundle state) {
         state.putString(KEY_ANSWER, card.getAnswer());
         state.putString(KEY_QUESTION, card.getQuestion());
+//        state.putString(KEY_FALSEONE, card.getFalseOne());
+//        state.putString(KEY_FALSETWO,card.getFalseTwo());
     }
 
     @Override
