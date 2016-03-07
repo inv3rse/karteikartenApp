@@ -95,8 +95,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
     public void showFinishedDialog() {
         AlertDialog.Builder msg = new AlertDialog.Builder(this);
-        msg.setTitle("Meldung");
-        msg.setMessage("No more card!");
+        msg.setTitle("Alert");
+        msg.setMessage("No more cards!");
         msg.setCancelable(true);
         msg.setPositiveButton(android.R.string.ok, (dialog, which) -> this.finish());
         msg.create().show();
