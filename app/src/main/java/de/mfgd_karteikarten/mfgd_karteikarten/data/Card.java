@@ -12,7 +12,7 @@ public class Card extends RealmObject {
     private String answer;
     private String question;
     private int type;
-//    private String falseone;
+    private String falseanswer;
 
     public Card() {
 
@@ -26,13 +26,13 @@ public class Card extends RealmObject {
         this.type = type;
     }
 
-//    public String getFalseOne() {
-//        return falseone;
-//    }
-//
-//    public void setFalseOne(String falseOne) {
-//        this.falseone = falseOne;
-//    }
+    public String getFalseanswer() {
+        return falseanswer;
+    }
+
+    public void setFalseanswer(String falseanswer) {
+        this.falseanswer = falseanswer;
+    }
 
 
 
