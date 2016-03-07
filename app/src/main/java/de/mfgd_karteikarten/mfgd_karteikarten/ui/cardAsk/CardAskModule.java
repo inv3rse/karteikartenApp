@@ -30,23 +30,16 @@ public class CardAskModule {
     public List<Card> provideCards(Realm realm) {
         List<Card> cards = new ArrayList<>();
 
-        for (int id : this.ids)
-        {
-            if (this.cards)
-            {
+        for (int id : this.ids) {
+            if (this.cards) {
                 Card card = realm.where(Card.class).equalTo("ID", id).findFirst();
-                if(card != null)
-                {
+                if (card != null) {
                     cards.add(realm.copyFromRealm(card));
                 }
-            }
-            else
-            {
+            } else {
                 Deck deck = realm.where(Deck.class).equalTo("ID", id).findFirst();
-                if(deck != null)
-                {
-                    for (Card card : deck.getCards())
-                    {
+                if (deck != null) {
+                    for (Card card : deck.getCards()) {
                         cards.add(realm.copyFromRealm(card));
                     }
                 }
@@ -58,14 +51,10 @@ public class CardAskModule {
 
     @Provides
     @ActivityScope
-    public LearnInterface provideLearnAssistant(Realm realm, List<Card> cards)
-    {
-        if (testMode)
-        {
+    public LearnInterface provideLearnAssistant(Realm realm, List<Card> cards) {
+        if (testMode) {
             return new TestAssistant(cards);
-        }
-        else
-        {
+        } else {
             return new LearnAssistant(realm, cards);
         }
     }

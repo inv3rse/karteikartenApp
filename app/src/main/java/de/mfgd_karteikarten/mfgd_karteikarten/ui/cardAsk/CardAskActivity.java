@@ -71,8 +71,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         zeigeAntwortButton.setOnClickListener(v -> getPresenter().zeigeAntwort());
     }
 
-    public void setCard(Card card)
-    {
+    public void setCard(Card card) {
         frageText.setText(card.getQuestion());
         antwortText.setText(card.getAnswer());
     }
@@ -93,7 +92,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             antwortHead.setVisibility(View.INVISIBLE);
         }
     }
-    public void showFinishedDialog(){
+
+    public void showFinishedDialog() {
         AlertDialog.Builder msg = new AlertDialog.Builder(this);
         msg.setTitle("Meldung");
         msg.setMessage("No more card!");
