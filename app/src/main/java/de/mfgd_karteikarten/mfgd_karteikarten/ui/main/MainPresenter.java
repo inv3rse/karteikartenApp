@@ -34,8 +34,7 @@ public class MainPresenter extends Presenter<MainActivity> {
         view.setTopics(topics);
         view.setSelection(savedSelection);
 
-        if (dialogVisible)
-        {
+        if (dialogVisible) {
             view.showCreateEditDialog(dialogId, dialogText);
         }
     }
@@ -46,8 +45,7 @@ public class MainPresenter extends Presenter<MainActivity> {
         view.showCreateEditDialog(dialogId, "");
     }
 
-    public void updateDialogStatus(boolean visible, String name)
-    {
+    public void updateDialogStatus(boolean visible, String name) {
         dialogVisible = visible;
         dialogText = name;
     }
@@ -67,13 +65,11 @@ public class MainPresenter extends Presenter<MainActivity> {
         update();
     }
 
-    public void updateSelection(HashSet<Integer> selection)
-    {
+    public void updateSelection(HashSet<Integer> selection) {
         this.selection = selection;
     }
 
-    public void deleteSelection(MainActivity view)
-    {
+    public void deleteSelection(MainActivity view) {
         for (int i = topics.size() - 1; i >= 0; --i) {
             if (selection.contains(i)) {
                 topicManager.removeTopic(topics.remove(i));
@@ -83,10 +79,8 @@ public class MainPresenter extends Presenter<MainActivity> {
         view.setTopics(topics);
     }
 
-    public void editSelected(MainActivity view)
-    {
-        if (selection.size() == 1)
-        {
+    public void editSelected(MainActivity view) {
+        if (selection.size() == 1) {
             Topic topic = topics.get(selection.iterator().next());
             dialogId = topic.getID();
             view.showCreateEditDialog(dialogId, topic.getName());

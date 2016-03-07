@@ -58,8 +58,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
         topicAdapter.setTopics(topics);
     }
 
-    public void setSelection(HashSet<Integer> selection)
-    {
+    public void setSelection(HashSet<Integer> selection) {
         topicAdapter.setSelection(selection);
     }
 
@@ -67,8 +66,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
         topicAdapter.addTopic(topic);
     }
 
-    public void showCreateEditDialog(int topicId, String topicName)
-    {
+    public void showCreateEditDialog(int topicId, String topicName) {
         dialogInput = new EditText(this);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -79,7 +77,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(dialogInput)
-                .setTitle(topicId == Topic.UNKNOWN_ID? "ADD TOPIC" : "EDIT TOPIC")
+                .setTitle(topicId == Topic.UNKNOWN_ID ? "ADD TOPIC" : "EDIT TOPIC")
                 .setMessage("Type in the name of the topic.")
                 .setIcon(R.drawable.ic_my_add_24dp)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
@@ -104,11 +102,9 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
 
     @Override
     protected void onPause() {
-        if (dialogInput != null)
-        {
+        if (dialogInput != null) {
             getPresenter().updateDialogStatus(true, dialogInput.getText().toString());
-        }
-        else {
+        } else {
             getPresenter().updateDialogStatus(false, "");
         }
         super.onPause();

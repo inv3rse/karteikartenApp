@@ -6,7 +6,6 @@ import de.mfgd_karteikarten.mfgd_karteikarten.base.AppComponent;
 
 @ActivityScope
 @Component(dependencies = AppComponent.class, modules = MainModule.class)
-public interface MainComponent extends AppComponent
-{
+public interface MainComponent extends AppComponent {
     MainPresenter getMainPresenter();
 }
