@@ -11,9 +11,30 @@ public class Card extends RealmObject {
     private int rating;
     private String answer;
     private String question;
+    private int type;
+    private String falseanswer;
+
     public Card() {
 
     }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getFalseanswer() {
+        return falseanswer;
+    }
+
+    public void setFalseanswer(String falseanswer) {
+        this.falseanswer = falseanswer;
+    }
+
+
 
     public int getID() {
         return ID;
