@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/type_button1"
+            android:singleLine="true"
             style="@style/RadioButtonStyle"/>
 
         <RadioButton
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/type_button2"
+            android:singleLine="true"
             style="@style/RadioButtonStyle"/>
 
         <RadioButton
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/type_button3"
+            android:singleLine="true"
             style="@style/RadioButtonStyle"/>
     </RadioGroup>
 
