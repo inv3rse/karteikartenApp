@@ -45,7 +45,7 @@
     </style>
 
     <style name="RadioButtonStyle" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorFont</item>
     </style>
 
