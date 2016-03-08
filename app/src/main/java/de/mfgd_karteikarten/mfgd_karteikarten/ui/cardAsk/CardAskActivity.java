@@ -77,16 +77,18 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         BG.setOnTouchListener(new Gesture(this) {
 
             public boolean onSwipeRight() {
+                //es wurde nach rechts gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
-                    getPresenter().gradeCard(false);
+                    getPresenter().gradeCard(true);
                     return false;
                 }
                 return false;
             }
 
             public boolean onSwipeLeft() {
+                //es wurde nach links gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
-                    getPresenter().gradeCard(true);
+                    getPresenter().gradeCard(false);
                     return false;
                 }
                 return false;
