@@ -50,6 +50,7 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         learnAssistant.gradeCurrentCard(positive);
 
         if (learnAssistant.hasNextCard()) {
+            //// TODO: 08.03.16 Add richtig falsch anzahl
             card = learnAssistant.getNextCard();
             if (cardAskActivity != null) {
                 cardAskActivity.setCard(card);

@@ -46,7 +46,7 @@ public class Gesture implements View.OnTouchListener {
                         } else {
                             result = onSwipeLeft();
                         }
-                    }else{
+                    } else {
                         result = nothing();
                     }
                 } else {
@@ -56,7 +56,7 @@ public class Gesture implements View.OnTouchListener {
                         } else {
                             result = onSwipeTop();
                         }
-                    }else{
+                    } else {
                         result = nothing();
                     }
                 }
@@ -75,7 +75,7 @@ public class Gesture implements View.OnTouchListener {
         return false;
     }
 
-    public boolean nothing(){
+    public boolean nothing() {
         return false;
     }
 
