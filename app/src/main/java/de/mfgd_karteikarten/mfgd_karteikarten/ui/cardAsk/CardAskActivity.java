@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -79,6 +80,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeRight() {
                 //es wurde nach rechts gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
+                    Toast.makeText(getApplicationContext(), "you agreed to the answer", Toast.LENGTH_SHORT).show();
+
                     getPresenter().gradeCard(true);
                     return false;
                 }
@@ -88,7 +91,20 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeLeft() {
                 //es wurde nach links gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
+                    Toast.makeText(getApplicationContext(), "you disagreed to the answer", Toast.LENGTH_SHORT).show();
+
                     getPresenter().gradeCard(false);
+                    return false;
+                }
+
+                return false;
+            }
+            public boolean onSwipeBottom(){
+                //es wurde nach unten gewischt
+                if (View.VISIBLE == antwortText.getVisibility()) {
+                    Toast.makeText(getApplicationContext(), "swipe to the right = you agree with the statement" +
+                            "\nswipe to the left = you disagree with the statement", Toast.LENGTH_LONG).show();
+
                     return false;
                 }
                 return false;
