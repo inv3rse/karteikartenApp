@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -69,6 +70,32 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         bewertenButton1.setOnClickListener(v -> getPresenter().gradeCard(false));
         bewertenButton2.setOnClickListener(v -> getPresenter().gradeCard(true));
         zeigeAntwortButton.setOnClickListener(v -> getPresenter().zeigeAntwort());
+
+
+        ScrollView BG = (ScrollView) findViewById(R.id.scrollview);
+
+        BG.setOnTouchListener(new Gesture(this) {
+
+            public boolean onSwipeRight() {
+                if (View.VISIBLE == antwortText.getVisibility()) {
+                    getPresenter().gradeCard(false);
+                    return false;
+                }
+                return false;
+            }
+
+            public boolean onSwipeLeft() {
+                if (View.VISIBLE == antwortText.getVisibility()) {
+                    getPresenter().gradeCard(true);
+                    return false;
+                }
+                return false;
+            }
+
+
+        });
+
+
     }
 
     public void setCard(Card card) {
