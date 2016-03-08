@@ -11,11 +11,11 @@ import android.view.View;
 public class Gesture implements View.OnTouchListener {
 
     private GestureDetector gestureDetector = null;
-    private Context cxt = null;
+    private Context cont = null;
 
     public Gesture(Context context) {
         gestureDetector = new GestureDetector(context, new GestureListener());
-        cxt = context;
+        cont = context;
     }
 
     public boolean onTouch(View v, MotionEvent event) {
