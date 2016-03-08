@@ -103,7 +103,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
                 //es wurde nach unten gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
                     Toast.makeText(getApplicationContext(), "swipe to the right = you agree with the statement" +
-                            "\nswipe to the left = you disagree with the statement", Toast.LENGTH_LONG).show();
+                            "\nswipe to the left = you disagree with the statement" +
+                            "\nswipe down = information", Toast.LENGTH_LONG).show();
 
                     return false;
                 }
