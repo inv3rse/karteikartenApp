@@ -37,7 +37,7 @@
                 <TextView
                     android:id="@+id/FrageText"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     style="@style/HeadingStyle"
                     android:text="@string/FrageText" />
 
@@ -50,22 +50,150 @@
                     android:layout_marginBottom="10dp"
                     />
 
-                <TextView
-                    android:id="@+id/AntwortText"
+                <ViewFlipper
+                    android:id="@+id/viewflipperask"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    style="@style/HeadingStyle"
-                    android:text="@string/AntwortText"
-                    android:layout_marginBottom="10dp"
-                    />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/AntwortEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/TextStyle"
-                    android:hint="@string/AntwortEditText"
-                    />
+                    <LinearLayout
+                        android:id="@+id/defaultview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/AntwortText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/HeadingStyle"
+                            android:text="@string/AntwortText"
+                            android:layout_marginBottom="10dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/AntwortEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/TextStyle"
+                            android:hint="@string/AntwortEditText"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/vocviewquestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/vocyourquestion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/HeadingStyle"
+                            android:text="@string/title_yourAnswer"
+                            android:layout_marginBottom="10dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/vocedittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/TextStyle"/>
+
+                        <TextView
+                            android:id="@+id/titlecorrectanswer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/HeadingStyle"
+                            android:text="@string/title_correctAnswer"
+                            android:layout_marginBottom="10dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/correctanswer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/TextStyle" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/mcviewquestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/mcyouranswer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/HeadingStyle"
+                            android:text="@string/title_yourAnswer"
+                            android:layout_marginBottom="10dp"/>
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RadioButton
+                                    android:id="@+id/answer1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/TextStyle"/>
+
+                                <ImageView
+                                    android:id="@+id/correct1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/check"
+                                    android:layout_toEndOf="@id/answer1"/>
+
+                                <ImageView
+                                    android:id="@+id/false1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/close"
+                                    android:layout_toEndOf="@id/answer1" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RadioButton
+                                    android:id="@+id/answer2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/TextStyle"/>
+
+                                <ImageView
+                                    android:id="@+id/correct2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/check"
+                                    android:layout_toEndOf="@id/answer2"/>
+
+                                <ImageView
+                                    android:id="@+id/false2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/close"
+                                    android:layout_toEndOf="@id/answer2" />
+
+                            </RelativeLayout>
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                </ViewFlipper>
 
             </LinearLayout>
 

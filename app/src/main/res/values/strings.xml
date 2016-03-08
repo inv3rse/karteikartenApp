@@ -25,4 +25,6 @@
     <string name="type_button2">vocabulary</string>
     <string name="type_button3">multiple choice</string>
     <string name="cardtype">n.a.</string>
+    <string name="title_yourAnswer">Your Answer:</string>
+    <string name="title_correctAnswer">Correct Answer:</string>
 </resources>
