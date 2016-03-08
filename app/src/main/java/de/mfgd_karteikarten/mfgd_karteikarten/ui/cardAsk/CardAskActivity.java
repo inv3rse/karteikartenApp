@@ -93,11 +93,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
                 }
                 return false;
             }
-
-
         });
-
-
     }
 
     public void setCard(Card card) {
