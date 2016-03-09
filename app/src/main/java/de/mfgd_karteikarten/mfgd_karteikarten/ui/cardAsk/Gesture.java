@@ -5,9 +5,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
- * Created by marten on 08.03.16.
- */
+
 public class Gesture implements View.OnTouchListener {
 
     private GestureDetector gestureDetector = null;
@@ -19,8 +17,8 @@ public class Gesture implements View.OnTouchListener {
     }
 
     public boolean onTouch(View v, MotionEvent event) {
-        boolean res = gestureDetector.onTouchEvent(event);
-        return res;
+        boolean re = gestureDetector.onTouchEvent(event);
+        return re;
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {

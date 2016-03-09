@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
@@ -25,7 +24,6 @@ import java.util.Random;
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
-import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import nucleus.view.NucleusAppCompatActivity;
 
 public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> {
@@ -55,6 +53,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     private ImageView mcFalse2;
     private Button nextButton;
     private ViewFlipper viewFlipper;
+    private TextView number;
     private Toolbar toolbar;
     private int type;
     private String mcCorrectAnswer;
@@ -64,11 +63,15 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     private Card card;
     private List<Integer> ids;
     private int position;
+    private int rightanswer;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_ask);
+        rightanswer = 0;
+        count = 0;
 
         Bundle extras = getIntent().getExtras();
 
@@ -108,6 +111,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         mcFalse2 = (ImageView) findViewById(R.id.false2);
         nextButton = (Button) findViewById(R.id.nextButton);
         viewFlipper = (ViewFlipper) findViewById(R.id.viewflipperask);
+        number = (TextView) findViewById(R.id.shownumber);
 
         context = this.getApplicationContext();
 
@@ -147,6 +151,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeRight() {
                 //es wurde nach rechts gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
+                    rightanswer = rightanswer +1;
+                    count = count +1;
                     Toast.makeText(getApplicationContext(), "you agreed to the answer", Toast.LENGTH_SHORT).show();
 
                     getPresenter().gradeCard(true);
@@ -158,6 +164,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeLeft() {
                 //es wurde nach links gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
+                    count = count+1;
                     Toast.makeText(getApplicationContext(), "you disagreed to the answer", Toast.LENGTH_SHORT).show();
 
                     getPresenter().gradeCard(false);
@@ -217,6 +224,9 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(findViewById(R.id.defaultview)));
         }
     }
+    public int getRightanswer(){
+        return rightanswer;
+    }
 
     public void setAnswerVisible(boolean answerVisib) {
         answerVisible = answerVisib;
@@ -226,6 +236,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             zeigeAntwortButton.setVisibility(View.GONE);
             antwortText.setVisibility(View.VISIBLE);
             antwortHead.setVisibility(View.VISIBLE);
+            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
+            number.setVisibility(View.VISIBLE);
 
         }else if(answerVisible && type == 2)
         {
@@ -233,10 +245,14 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             zeigeAntwortButton.setVisibility(View.GONE);
             vocCorrectTitle.setVisibility(View.VISIBLE);
             vocCorrectAnswer.setVisibility(View.VISIBLE);
+            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
+            number.setVisibility(View.VISIBLE);
             vocYourAnswer.setEnabled(false);
         }else if(answerVisible && type == 3)
         {
             nextButton.setVisibility(View.VISIBLE);
+            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
+            number.setVisibility(View.VISIBLE);
             zeigeAntwortButton.setVisibility(View.GONE);
             mcAnswer1.setEnabled(false);
             mcAnswer1.setFocusable(false);
@@ -249,6 +265,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             bewertenButton2.setVisibility(View.GONE);
             zeigeAntwortButton.setVisibility(View.VISIBLE);
             antwortText.setVisibility(View.INVISIBLE);
+            number.setVisibility(View.INVISIBLE);
             antwortHead.setVisibility(View.INVISIBLE);
             vocCorrectTitle.setVisibility(View.INVISIBLE);
             vocCorrectAnswer.setVisibility(View.INVISIBLE);
@@ -267,6 +284,9 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
             nextButton.setVisibility(View.GONE);
+
+            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
+            number.setVisibility(View.VISIBLE);
 
         }
     }
@@ -290,13 +310,18 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             gradeCard = yAnswer.equals(cAnswer);
             if(gradeCard)
             {
+                rightanswer = rightanswer +1;
+                count = count + 1;
+
                 vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
             }else
             {
+                count = count + 1;
                 vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
             }
         }else
         {
+            count = count + 1;
             gradeCard = false;
         }
     }
@@ -311,10 +336,13 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
             if(gradeCard)
             {
+                rightanswer = rightanswer +1;
+                count = count + 1;
                 mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
                 mcCorrect1.setVisibility(View.VISIBLE);
             }else
             {
+                count = count + 1;
                 mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
                 mcFalse1.setVisibility(View.VISIBLE);
                 mcCorrect2.setVisibility(View.VISIBLE);
@@ -325,10 +353,13 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             gradeCard = s.equals(mcCorrectAnswer);
             if(gradeCard)
             {
+                rightanswer = rightanswer +1;
+                count = count + 1;
                 mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
                 mcCorrect2.setVisibility(View.VISIBLE);
             }else
             {
+                count = count + 1;
                 mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
                 mcFalse2.setVisibility(View.VISIBLE);
                 mcCorrect1.setVisibility(View.VISIBLE);
@@ -336,6 +367,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         }else {
             s = mcAnswer1.getText().toString();
             gradeCard = false;
+            count = count + 1;
             if(s.equals(mcCorrectAnswer))
             {
                 mcCorrect1.setVisibility(View.VISIBLE);
@@ -360,7 +392,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     public void showFinishedDialog() {
         AlertDialog.Builder msg = new AlertDialog.Builder(this);
         msg.setTitle("Alert");
-        msg.setMessage("No more cards!");
+        msg.setMessage("No more cards!  "+Integer.toString(rightanswer)+"/"+Integer.toString(count));
         msg.setCancelable(true);
         msg.setPositiveButton(android.R.string.ok, (dialog, which) -> this.finish());
         msg.create().show();
