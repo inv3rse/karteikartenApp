@@ -200,8 +200,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
         android:id="@+id/shownumber"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal" />
 
     <RelativeLayout
