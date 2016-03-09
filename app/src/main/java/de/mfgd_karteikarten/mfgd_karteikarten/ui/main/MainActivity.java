@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,16 +22,19 @@ import java.util.List;
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
+import de.mfgd_karteikarten.mfgd_karteikarten.ui.search.SearchableActivity;
 import de.mfgd_karteikarten.mfgd_karteikarten.ui.topic.TopicActivity;
 import nucleus.view.NucleusAppCompatActivity;
 
 public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implements ActionMode.Callback {
 
+    private static final String KEYCODE_CALL = "keycode_call";
     private TopicAdapter topicAdapter;
     private EditText dialogInput;
 
     private boolean isMultipleSelection;
     private ActionMode actionMode;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
         topicAdapter = new TopicAdapter(this);
         topicAdapter.setSelectionChangedListener(this::onSelectionChanged);
         topicAdapter.setItemClickedListener(position -> getPresenter().onPositionClicked(position));
+        ;
 
         RecyclerView topicGrid = (RecyclerView) findViewById(R.id.topic_grid);
         topicGrid.setLayoutManager(new GridLayoutManager(this, 2));
@@ -52,6 +57,8 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
 
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
         addButton.setOnClickListener(view -> getPresenter().onAddTopicClicked(this));
+
+
     }
 
     public void setTopics(List<Topic> topics) {
@@ -116,6 +123,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
         startActivity(intent);
     }
 
+
     private void onSelectionChanged(HashSet<Integer> selection) {
         boolean wasMultiple = isMultipleSelection;
         isMultipleSelection = selection.size() > 1;
@@ -159,6 +167,7 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
                     getPresenter().editSelected(this);
                 }
                 break;
+
             default:
                 return false;
         }
@@ -167,8 +176,31 @@ public class MainActivity extends NucleusAppCompatActivity<MainPresenter> implem
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItemCompat.getActionView(searchItem);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Toast.makeText(getApplicationContext(), "schreib etwas ", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, SearchableActivity.class);
+
+
+        startActivity(intent);
+        return true;
+    }
+
+
+    @Override
     public void onDestroyActionMode(ActionMode mode) {
         this.topicAdapter.clearSelection();
         this.actionMode = null;
     }
+
 }

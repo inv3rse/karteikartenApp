@@ -11,4 +11,11 @@
         android:title="@string/delete_action"
         android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_search"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_search"
+
+        />
 </menu>
+    

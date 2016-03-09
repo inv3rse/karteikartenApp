@@ -57,7 +57,16 @@
                 style="@style/HeadingStyle"
                 android:text="@string/title_question"
                 android:textAlignment="center"
-                android:labelFor="@+id/question_text"/>
+                android:labelFor="@+id/question_text"
+                android:id="@+id/textView" />
+
+            <Button
+                android:id="@+id/mircophone"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_mic"
+                android:clickable="true" />
+
 
             <EditText
                 android:id="@+id/question_text"
