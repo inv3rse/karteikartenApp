@@ -98,9 +98,11 @@ public class ImExporter
                         {
                             out.beginObject();
                             out.name("ID").value(card.getID());
+                            out.name("type").value(card.getType());
                             out.name("rating").value(card.getRating());
                             out.name("question").value(card.getQuestion());
                             out.name("answer").value(card.getAnswer());
+                            out.name("false_answer").value(card.getFalseanswer());
                             out.endObject();
                         }
                         out.endArray();
@@ -124,6 +126,9 @@ public class ImExporter
                                     case "ID":
                                         card.setID(in.nextInt());
                                         break;
+                                    case "type":
+                                        card.setType(in.nextInt());
+                                        break;
                                     case "rating":
                                         card.setRating(in.nextInt());
                                         break;
@@ -132,6 +137,9 @@ public class ImExporter
                                         break;
                                     case "answer":
                                         card.setAnswer(in.nextString());
+                                        break;
+                                    case "false_answer":
+                                        card.setFalseanswer(in.nextString());
                                         break;
                                 }
                             }
