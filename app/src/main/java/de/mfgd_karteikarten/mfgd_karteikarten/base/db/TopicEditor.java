@@ -80,9 +80,7 @@ public class TopicEditor {
      */
     public void setDeck(Deck deck) {
         realm.beginTransaction();
-        Deck oldDeck = topic.getDecks().where().equalTo("ID", deck.getID()).findFirst();
-        oldDeck.setName(deck.getName());
-        oldDeck.setCards(deck.getCards());
+        realm.copyToRealmOrUpdate(deck);
         realm.commitTransaction();
     }
 
