@@ -38,6 +38,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     public static final String KEY_SELECTION1_TEXT = "KEY_SELECTION1_TEXT";
     public static final String KEY_SELECTION2_TEXT = "KEY_SELECTION2_TEXT";
     public static final String KEY_EDIT_ANSWER = "KEY_EDIT_ANSWER";
+    public static final String KEY_SCORE_RIGHT = "KEY_SCORE_RIGHT";
+    public static final String KEY_SCORE_COUNT = "KEY_SCORE_COUNT";
 
     private TextView frageText;
     private TextView antwortText;
@@ -58,6 +60,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     private ViewFlipper viewFlipper;
     private TextView number;
     private Toolbar toolbar;
+
     private int type;
     private String mcCorrectAnswer;
     private boolean gradeCard;
@@ -122,6 +125,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             setAnswerVisible(false);
             int i = savedInstanceState.getInt(KEY_CARD_POSITION);
             answerVisible = savedInstanceState.getBoolean(KEY_SHOW_ANSWER);
+            rightanswer = savedInstanceState.getInt(KEY_SCORE_RIGHT);
+            count = savedInstanceState.getInt(KEY_SCORE_COUNT);
 
             card = getPresenter().getSavedCard(i);
 
@@ -130,6 +135,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             vocYourAnswer.setText(savedInstanceState.getString(KEY_EDIT_ANSWER));
             mcAnswer1.setText(savedInstanceState.getString(KEY_SELECTION1_TEXT));
             mcAnswer2.setText(savedInstanceState.getString(KEY_SELECTION2_TEXT));
+            number.setText(savedInstanceState.getString(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right."));
 
             if(savedInstanceState.getBoolean(KEY_SELECTION1))
             {
@@ -145,13 +151,30 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             }
         }
 
-        bewertenButton1.setOnClickListener(v -> getPresenter().gradeCard(false));
-        bewertenButton2.setOnClickListener(v -> getPresenter().gradeCard(true));
+        bewertenButton1.setOnClickListener(v -> {
+            getPresenter().gradeCard(false);
+            gradeCard = false;
+            putScore();
+            showScore();
+        });
+        bewertenButton2.setOnClickListener(v -> {
+            getPresenter().gradeCard(true);
+            gradeCard = true;
+            putScore();
+            showScore();
+        });
         zeigeAntwortButton.setOnClickListener(v -> {
             getPresenter().zeigeAntwort();
             gradeCard();
+            if(type > 1) {
+                putScore();
+                showScore();
+            }
         });
-        nextButton.setOnClickListener(v -> getPresenter().gradeCard(gradeCard));
+        nextButton.setOnClickListener(v -> {
+            getPresenter().gradeCard(gradeCard);
+            showScore();
+        });
 
 
         ScrollView BG = (ScrollView) findViewById(R.id.scrollview);
@@ -161,8 +184,9 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeRight() {
                 //es wurde nach rechts gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
-                    rightanswer = rightanswer +1;
-                    count = count +1;
+                    gradeCard = true;
+                    putScore();
+                    showScore();
                     Toast.makeText(getApplicationContext(), "you agreed to the answer", Toast.LENGTH_SHORT).show();
 
                     getPresenter().gradeCard(true);
@@ -174,8 +198,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeLeft() {
                 //es wurde nach links gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
-                    count = count+1;
-                    Toast.makeText(getApplicationContext(), "you disagreed to the answer", Toast.LENGTH_SHORT).show();
+                    gradeCard = false;
+                    putScore();
+                    showScore();
+                    Toast.makeText(getApplicationContext(), "you disagreed with the answer", Toast.LENGTH_SHORT).show();
 
                     getPresenter().gradeCard(false);
                     return false;
@@ -246,8 +272,6 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             zeigeAntwortButton.setVisibility(View.GONE);
             antwortText.setVisibility(View.VISIBLE);
             antwortHead.setVisibility(View.VISIBLE);
-            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
-            number.setVisibility(View.VISIBLE);
 
         }else if(answerVisible && type == 2)
         {
@@ -255,14 +279,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             zeigeAntwortButton.setVisibility(View.GONE);
             vocCorrectTitle.setVisibility(View.VISIBLE);
             vocCorrectAnswer.setVisibility(View.VISIBLE);
-            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
-            number.setVisibility(View.VISIBLE);
             vocYourAnswer.setEnabled(false);
         }else if(answerVisible && type == 3)
         {
             nextButton.setVisibility(View.VISIBLE);
-            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
-            number.setVisibility(View.VISIBLE);
             zeigeAntwortButton.setVisibility(View.GONE);
             mcAnswer1.setEnabled(false);
             mcAnswer1.setFocusable(false);
@@ -295,9 +315,24 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
             nextButton.setVisibility(View.GONE);
 
-            number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
-            number.setVisibility(View.VISIBLE);
+        }
+    }
 
+    public void showScore()
+    {
+        number.setText(Integer.toString(rightanswer) + " of " + Integer.toString(count)+" cards were right.");
+        number.setVisibility(View.VISIBLE);
+    }
+
+    public void putScore()
+    {
+        if(gradeCard)
+        {
+            count = count + 1;
+            rightanswer = rightanswer + 1;
+        }else
+        {
+            count = count + 1;
         }
     }
 
@@ -320,20 +355,13 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             gradeCard = yAnswer.equals(cAnswer);
             if(gradeCard)
             {
-                rightanswer = rightanswer +1;
-                count = count + 1;
-
                 vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
             }else
             {
-                count = count + 1;
                 vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
             }
-        }else
-        {
-            count = count + 1;
-            gradeCard = false;
         }
+
     }
 
     public void gradeCardMc()
@@ -346,13 +374,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
             if(gradeCard)
             {
-                rightanswer = rightanswer +1;
-                count = count + 1;
                 mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
                 mcCorrect1.setVisibility(View.VISIBLE);
             }else
             {
-                count = count + 1;
                 mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
                 mcFalse1.setVisibility(View.VISIBLE);
                 mcCorrect2.setVisibility(View.VISIBLE);
@@ -363,13 +388,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             gradeCard = s.equals(mcCorrectAnswer);
             if(gradeCard)
             {
-                rightanswer = rightanswer +1;
-                count = count + 1;
                 mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
                 mcCorrect2.setVisibility(View.VISIBLE);
             }else
             {
-                count = count + 1;
                 mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
                 mcFalse2.setVisibility(View.VISIBLE);
                 mcCorrect1.setVisibility(View.VISIBLE);
@@ -377,7 +399,6 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         }else {
             s = mcAnswer1.getText().toString();
             gradeCard = false;
-            count = count + 1;
             if(s.equals(mcCorrectAnswer))
             {
                 mcCorrect1.setVisibility(View.VISIBLE);
@@ -404,6 +425,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         outState.putString(KEY_SELECTION1_TEXT, mcAnswer1.getText().toString());
         outState.putString(KEY_SELECTION2_TEXT, mcAnswer2.getText().toString());
         outState.putString(KEY_EDIT_ANSWER, vocYourAnswer.getText().toString());
+        outState.putInt(KEY_SCORE_RIGHT, rightanswer);
+        outState.putInt(KEY_SCORE_COUNT, count);
 
         super.onSaveInstanceState(outState);
     }
