@@ -8,6 +8,8 @@ public interface LearnInterface {
     boolean hasNextCard();
     Card getNextCard();
     Card shuffleCard();
+    Card getCard(int i);
+    int getPosition(Card card);
 
     void gradeCurrentCard(boolean positive);
 }

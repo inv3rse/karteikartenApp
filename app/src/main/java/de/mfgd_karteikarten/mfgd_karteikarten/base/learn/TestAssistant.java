@@ -29,6 +29,19 @@ public class TestAssistant implements LearnInterface {
     }
 
     @Override
+    public Card getCard(int i)
+    {
+        return cards.get(i);
+
+    }
+
+    @Override
+    public int getPosition(Card card)
+    {
+        return cards.indexOf(card);
+    }
+
+    @Override
     public Card shuffleCard() {
         if (currentCard != null) {
             cards.add(currentCard);

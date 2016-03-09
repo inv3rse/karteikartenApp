@@ -27,4 +27,5 @@
     <string name="cardtype">n.a.</string>
     <string name="title_yourAnswer">Your Answer:</string>
     <string name="title_correctAnswer">Correct Answer:</string>
+    <string name="nextButton">Next</string>
 </resources>

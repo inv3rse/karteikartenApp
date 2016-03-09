@@ -71,6 +71,15 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         }
     }
 
+    public Card getSavedCard(int position)
+    {
+        return learnAssistant.getCard(position);
+    }
+
+    public int getPosition(Card card)
+    {
+        return learnAssistant.getPosition(card);
+    }
 
     public static class Factory implements PresenterFactory<CardAskPresenter> {
         private App app;

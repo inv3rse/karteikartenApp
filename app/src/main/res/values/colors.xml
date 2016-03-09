@@ -7,4 +7,6 @@
     <color name="colorBackground">#eeeeee</color>
     <color name="colorBackgroundItem">#8AB3C3</color>
     <color name="colorButtonClicked">#528395</color>
+    <color name="colorAnswerCorrect">#00ff7f</color>
+    <color name="colorAnswerFalse">#ff4040</color>
 </resources>

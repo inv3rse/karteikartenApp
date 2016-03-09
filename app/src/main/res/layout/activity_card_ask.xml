@@ -87,7 +87,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/vocyourquestion"
+                            android:id="@+id/vocyouranswer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/HeadingStyle"
@@ -137,35 +137,28 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
                                 <RadioButton
                                     android:id="@+id/answer1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     style="@style/TextStyle"/>
 
-                                <ImageView
-                                    android:id="@+id/correct1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/check"
-                                    android:layout_toEndOf="@id/answer1"/>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
-                                <ImageView
-                                    android:id="@+id/false1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/close"
-                                    android:layout_toEndOf="@id/answer1" />
+                                    <ImageView
+                                        android:id="@+id/correct1"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:background="@drawable/check" />
 
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                    <ImageView
+                                        android:id="@+id/false1"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:background="@drawable/close" />
+                                </RelativeLayout>
 
                                 <RadioButton
                                     android:id="@+id/answer2"
@@ -173,21 +166,22 @@
                                     android:layout_height="wrap_content"
                                     style="@style/TextStyle"/>
 
-                                <ImageView
-                                    android:id="@+id/correct2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/check"
-                                    android:layout_toEndOf="@id/answer2"/>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
-                                <ImageView
-                                    android:id="@+id/false2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/close"
-                                    android:layout_toEndOf="@id/answer2" />
+                                    <ImageView
+                                        android:id="@+id/correct2"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:background="@drawable/check" />
 
-                            </RelativeLayout>
+                                    <ImageView
+                                        android:id="@+id/false2"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:background="@drawable/close" />
+                                </RelativeLayout>
 
                         </RadioGroup>
 
@@ -231,6 +225,17 @@
             android:layout_alignParentBottom="true"
             />
 
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:clickable="true"
+            android:text="@string/nextButton"
+            android:textSize="25sp"
+            android:layout_margin="5dp"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            />
 
         <Button
             android:id="@+id/bewertenButton2"

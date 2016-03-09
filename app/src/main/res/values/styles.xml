@@ -42,6 +42,7 @@
         <item name="android:textColorPrimary">@color/colorFont</item>
         <item name="android:textColorSecondary">@color/colorFont</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 
     <style name="RadioButtonStyle" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">

@@ -45,6 +45,18 @@ public class LearnAssistant implements LearnInterface {
     }
 
     @Override
+    public Card getCard(int i)
+    {
+        return cards.get(i);
+    }
+
+    @Override
+    public int getPosition(Card card)
+    {
+        return cards.indexOf(card);
+    }
+
+    @Override
     public Card shuffleCard() {
         return getNextCard();
     }

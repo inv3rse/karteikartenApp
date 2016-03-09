@@ -1,8 +1,10 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.cardAsk;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.R;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
@@ -26,6 +32,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     public static final String CARDASK_EXTRA_DECKS = "CARDASK_EXTRA_DECKS";
     public static final String CARDASK_EXTRA_CARDS = "CARDASK_EXTRA_CARDS";
     public static final String CARDASK_EXTRA_LEARNMODE = "CARDASK_EXTRA_LEARNMODE";
+    public static final String KEY_CARD_POSITION = "KEY_CARD_POSITION";
+    public static final String KEY_SHOW_ANSWER = "KEY_SHOWANSWER";
+    public static final String KEY_SELECTION = "KEY_SELECTION";
+    public static final String KEY_EDIT_ANSWER = "KEY_EDIT_ANSWER";
 
     private TextView frageText;
     private TextView antwortText;
@@ -33,7 +43,26 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     private Button bewertenButton1;
     private Button bewertenButton2;
     private TextView antwortHead;
+    private TextView vocCorrectTitle;
+    private TextView vocCorrectAnswer;
+    private EditText vocYourAnswer;
+    private RadioButton mcAnswer1;
+    private RadioButton mcAnswer2;
+    private ImageView mcCorrect1;
+    private ImageView mcCorrect2;
+    private ImageView mcFalse1;
+    private ImageView mcFalse2;
+    private Button nextButton;
+    private ViewFlipper viewFlipper;
     private Toolbar toolbar;
+    private int type;
+    private String mcCorrectAnswer;
+    private boolean gradeCard;
+    private Context context;
+    private boolean answerVisible;
+    private Card card;
+    private List<Integer> ids;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +72,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         Bundle extras = getIntent().getExtras();
 
         boolean learnMode = extras.getBoolean(CARDASK_EXTRA_LEARNMODE, true);
-        ArrayList<Integer> ids = extras.getIntegerArrayList(CARDASK_EXTRA_CARDS);
+        ids = new ArrayList<>();
+        ids = extras.getIntegerArrayList(CARDASK_EXTRA_CARDS);
         boolean cards = true;
         if (ids == null) {
             cards = false;
@@ -66,10 +96,47 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         bewertenButton1 = (Button) findViewById(R.id.bewertenButton1);
         bewertenButton2 = (Button) findViewById(R.id.bewertenButton2);
         antwortHead = (TextView) findViewById(R.id.AntwortText);
+        vocCorrectTitle = (TextView) findViewById(R.id.titlecorrectanswer);
+        vocCorrectAnswer = (TextView) findViewById(R.id.correctanswer);
+        vocYourAnswer = (EditText) findViewById(R.id.vocedittext);
+        mcAnswer1 = (RadioButton) findViewById(R.id.answer1);
+        mcAnswer2 = (RadioButton) findViewById(R.id.answer2);
+        mcCorrect1 = (ImageView) findViewById(R.id.correct1);
+        mcCorrect2 = (ImageView) findViewById(R.id.correct2);
+        mcFalse1 = (ImageView) findViewById(R.id.false1);
+        mcFalse2 = (ImageView) findViewById(R.id.false2);
+        nextButton = (Button) findViewById(R.id.nextButton);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewflipperask);
+
+        context = this.getApplicationContext();
+
+        if (savedInstanceState != null) {
+            int i = savedInstanceState.getInt(KEY_CARD_POSITION);
+            answerVisible = savedInstanceState.getBoolean(KEY_SHOW_ANSWER);
+            setAnswerVisible(answerVisible);
+
+            vocYourAnswer.setText(savedInstanceState.getString(KEY_EDIT_ANSWER));
+            card = getPresenter().getSavedCard(i);
+
+            if(savedInstanceState.getBoolean(KEY_SELECTION))
+            {
+                mcAnswer1.setChecked(true);
+            }else
+            {
+                mcAnswer2.setChecked(true);
+            }
+
+            setCard(card);
+            setAnswerVisible(answerVisible);
+        }
 
         bewertenButton1.setOnClickListener(v -> getPresenter().gradeCard(false));
         bewertenButton2.setOnClickListener(v -> getPresenter().gradeCard(true));
-        zeigeAntwortButton.setOnClickListener(v -> getPresenter().zeigeAntwort());
+        zeigeAntwortButton.setOnClickListener(v -> {
+            getPresenter().zeigeAntwort();
+            gradeCard();
+        });
+        nextButton.setOnClickListener(v -> getPresenter().gradeCard(gradeCard));
 
 
         ScrollView BG = (ScrollView) findViewById(R.id.scrollview);
@@ -96,30 +163,183 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
 
 
         });
-
-
     }
 
-    public void setCard(Card card) {
-        frageText.setText(card.getQuestion());
-        antwortText.setText(card.getAnswer());
+    public void setCard(Card c) {
+        card = c;
+        position = getPresenter().getPosition(card);
+
+        List<String> list = new ArrayList<>();
+
+        if(card.getFalseanswer() != null) {
+            list.add(card.getAnswer());
+            list.add(card.getFalseanswer());
+
+            String s = list.get(new Random().nextInt(list.size()));
+
+            if (s != null) {
+                if (s.equals(card.getAnswer())) {
+                    mcAnswer1.setText(card.getAnswer());
+                    mcAnswer2.setText(card.getFalseanswer());
+                } else {
+                    mcAnswer1.setText(card.getFalseanswer());
+                    mcAnswer2.setText(card.getAnswer());
+                }
+            }
+        }
+
+            frageText.setText(card.getQuestion());
+            antwortText.setText(card.getAnswer());
+            vocCorrectAnswer.setText(card.getAnswer());
+            mcCorrectAnswer = card.getAnswer();
+            type = card.getType();
+
+        if (type == 3) {
+            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(findViewById(R.id.mcviewquestion)));
+        } else if (type == 2) {
+            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(findViewById(R.id.vocviewquestion)));
+        } else if (type == 1 || type == 0) {
+            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(findViewById(R.id.defaultview)));
+        }
     }
 
-    public void setAnswerVisible(boolean answerVisible) {
-        if (answerVisible) {
+    public void setAnswerVisible(boolean answerVisib) {
+        answerVisible = answerVisib;
+        if (answerVisible && type <= 1) {
             bewertenButton1.setVisibility(View.VISIBLE);
             bewertenButton2.setVisibility(View.VISIBLE);
             zeigeAntwortButton.setVisibility(View.GONE);
             antwortText.setVisibility(View.VISIBLE);
             antwortHead.setVisibility(View.VISIBLE);
 
-        } else {
+        }else if(answerVisible && type == 2)
+        {
+            nextButton.setVisibility(View.VISIBLE);
+            zeigeAntwortButton.setVisibility(View.GONE);
+            vocCorrectTitle.setVisibility(View.VISIBLE);
+            vocCorrectAnswer.setVisibility(View.VISIBLE);
+            vocYourAnswer.setEnabled(false);
+        }else if(answerVisible && type == 3)
+        {
+            nextButton.setVisibility(View.VISIBLE);
+            zeigeAntwortButton.setVisibility(View.GONE);
+            mcAnswer1.setEnabled(false);
+            mcAnswer1.setFocusable(false);
+            mcAnswer2.setEnabled(false);
+            mcAnswer2.setFocusable(false);
+
+        }else
+        {
             bewertenButton1.setVisibility(View.GONE);
             bewertenButton2.setVisibility(View.GONE);
             zeigeAntwortButton.setVisibility(View.VISIBLE);
             antwortText.setVisibility(View.INVISIBLE);
             antwortHead.setVisibility(View.INVISIBLE);
+            vocCorrectTitle.setVisibility(View.INVISIBLE);
+            vocCorrectAnswer.setVisibility(View.INVISIBLE);
+            vocYourAnswer.setEnabled(true);
+            vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            vocYourAnswer.setText(null);
+            mcCorrect1.setVisibility(View.INVISIBLE);
+            mcCorrect2.setVisibility(View.INVISIBLE);
+            mcFalse1.setVisibility(View.INVISIBLE);
+            mcFalse2.setVisibility(View.INVISIBLE);
+            mcAnswer1.setEnabled(true);
+            mcAnswer2.setEnabled(true);
+            mcAnswer1.setChecked(false);
+            mcAnswer2.setChecked(false);
+            mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+            nextButton.setVisibility(View.GONE);
+
         }
+    }
+
+    public void gradeCard()
+    {
+        if(type == 2)
+        {
+            gradeCardVoc();
+        }else if (type == 3)
+        {
+            gradeCardMc();
+        }
+    }
+
+    public void gradeCardVoc()
+    {
+        if(vocYourAnswer.getText() != null) {
+            String yAnswer = vocYourAnswer.getText().toString();
+            String cAnswer = vocCorrectAnswer.getText().toString();
+            gradeCard = yAnswer.equals(cAnswer);
+            if(gradeCard)
+            {
+                vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
+            }else
+            {
+                vocYourAnswer.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
+            }
+        }else
+        {
+            gradeCard = false;
+        }
+    }
+
+    public void gradeCardMc()
+    {
+        String s;
+        if(mcAnswer1.isChecked())
+        {
+            s = mcAnswer1.getText().toString();
+            gradeCard = s.equals(mcCorrectAnswer);
+
+            if(gradeCard)
+            {
+                mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
+                mcCorrect1.setVisibility(View.VISIBLE);
+            }else
+            {
+                mcAnswer1.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
+                mcFalse1.setVisibility(View.VISIBLE);
+                mcCorrect2.setVisibility(View.VISIBLE);
+            }
+        }else if(mcAnswer2.isChecked())
+        {
+            s = mcAnswer2.getText().toString();
+            gradeCard = s.equals(mcCorrectAnswer);
+            if(gradeCard)
+            {
+                mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerCorrect));
+                mcCorrect2.setVisibility(View.VISIBLE);
+            }else
+            {
+                mcAnswer2.setTextColor(ContextCompat.getColor(context, R.color.colorAnswerFalse));
+                mcFalse2.setVisibility(View.VISIBLE);
+                mcCorrect1.setVisibility(View.VISIBLE);
+            }
+        }else {
+            s = mcAnswer1.getText().toString();
+            gradeCard = false;
+            if(s.equals(mcCorrectAnswer))
+            {
+                mcCorrect1.setVisibility(View.VISIBLE);
+            }else
+            {
+                mcCorrect2.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState)
+    {
+        outState.putInt(KEY_CARD_POSITION, position);
+        outState.putBoolean(KEY_SHOW_ANSWER, answerVisible);
+        outState.putBoolean(KEY_SELECTION, mcAnswer1.isChecked());
+        outState.putString(KEY_EDIT_ANSWER, vocYourAnswer.getText().toString());
+
+        super.onSaveInstanceState(outState);
     }
 
     public void showFinishedDialog() {
