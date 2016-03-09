@@ -11,11 +11,11 @@ import android.view.View;
 public class Gesture implements View.OnTouchListener {
 
     private GestureDetector gestureDetector = null;
-    private Context cxt = null;
+    private Context cont = null;
 
     public Gesture(Context context) {
         gestureDetector = new GestureDetector(context, new GestureListener());
-        cxt = context;
+        cont = context;
     }
 
     public boolean onTouch(View v, MotionEvent event) {
@@ -46,7 +46,7 @@ public class Gesture implements View.OnTouchListener {
                         } else {
                             result = onSwipeLeft();
                         }
-                    }else{
+                    } else {
                         result = nothing();
                     }
                 } else {
@@ -56,7 +56,7 @@ public class Gesture implements View.OnTouchListener {
                         } else {
                             result = onSwipeTop();
                         }
-                    }else{
+                    } else {
                         result = nothing();
                     }
                 }
@@ -75,7 +75,7 @@ public class Gesture implements View.OnTouchListener {
         return false;
     }
 
-    public boolean nothing(){
+    public boolean nothing() {
         return false;
     }
 
