@@ -18,10 +18,12 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
     private LearnInterface learnAssistant;
     private Card card;
     private boolean isAnswerVisible;
+    private boolean paused;
 
     @Inject
     public CardAskPresenter(LearnInterface learnAssistant) {
         this.learnAssistant = learnAssistant;
+        paused = false;
         isAnswerVisible = false;
 
         if (learnAssistant.hasNextCard()) {
@@ -35,14 +37,15 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
     @Override
     protected void onTakeView(CardAskActivity cardAskActivity) {
 
-        if (card != null) {
+        if (card != null && !paused) {
             cardAskActivity.setCard(card);
             cardAskActivity.setAnswerVisible(isAnswerVisible);
-        } else {
+        } else if(card == null){
             cardAskActivity.showFinishedDialog();
         }
 
     }
+
 
     public void gradeCard(boolean positive) {
         CardAskActivity cardAskActivity = getView();
@@ -50,7 +53,6 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
         learnAssistant.gradeCurrentCard(positive);
 
         if (learnAssistant.hasNextCard()) {
-            //// TODO: 08.03.16 Add richtig falsch anzahl
             card = learnAssistant.getNextCard();
             if (cardAskActivity != null) {
                 cardAskActivity.setCard(card);
@@ -80,6 +82,10 @@ public class CardAskPresenter extends Presenter<CardAskActivity> {
     public int getPosition(Card card)
     {
         return learnAssistant.getPosition(card);
+    }
+
+    public void onSavedPause(boolean paused) {
+        this.paused = paused;
     }
 
     public static class Factory implements PresenterFactory<CardAskPresenter> {

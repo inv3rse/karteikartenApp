@@ -33,7 +33,10 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     public static final String CARDASK_EXTRA_LEARNMODE = "CARDASK_EXTRA_LEARNMODE";
     public static final String KEY_CARD_POSITION = "KEY_CARD_POSITION";
     public static final String KEY_SHOW_ANSWER = "KEY_SHOWANSWER";
-    public static final String KEY_SELECTION = "KEY_SELECTION";
+    public static final String KEY_SELECTION1 = "KEY_SELECTION1";
+    public static final String KEY_SELECTION2 = "KEY_SELECTION2";
+    public static final String KEY_SELECTION1_TEXT = "KEY_SELECTION1_TEXT";
+    public static final String KEY_SELECTION2_TEXT = "KEY_SELECTION2_TEXT";
     public static final String KEY_EDIT_ANSWER = "KEY_EDIT_ANSWER";
 
     private TextView frageText;
@@ -116,23 +119,30 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         context = this.getApplicationContext();
 
         if (savedInstanceState != null) {
+            setAnswerVisible(false);
             int i = savedInstanceState.getInt(KEY_CARD_POSITION);
             answerVisible = savedInstanceState.getBoolean(KEY_SHOW_ANSWER);
-            setAnswerVisible(answerVisible);
 
-            vocYourAnswer.setText(savedInstanceState.getString(KEY_EDIT_ANSWER));
             card = getPresenter().getSavedCard(i);
 
-            if(savedInstanceState.getBoolean(KEY_SELECTION))
+            setCard(card);
+
+            vocYourAnswer.setText(savedInstanceState.getString(KEY_EDIT_ANSWER));
+            mcAnswer1.setText(savedInstanceState.getString(KEY_SELECTION1_TEXT));
+            mcAnswer2.setText(savedInstanceState.getString(KEY_SELECTION2_TEXT));
+
+            if(savedInstanceState.getBoolean(KEY_SELECTION1))
             {
                 mcAnswer1.setChecked(true);
-            }else
+            }else if(savedInstanceState.getBoolean(KEY_SELECTION2))
             {
                 mcAnswer2.setChecked(true);
             }
 
-            setCard(card);
-            setAnswerVisible(answerVisible);
+            if(answerVisible) {
+                setAnswerVisible(true);
+                gradeCard();
+            }
         }
 
         bewertenButton1.setOnClickListener(v -> getPresenter().gradeCard(false));
@@ -379,11 +389,20 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     }
 
     @Override
+    protected void onPause(){
+        getPresenter().onSavedPause(true);
+        super.onPause();
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState)
     {
         outState.putInt(KEY_CARD_POSITION, position);
         outState.putBoolean(KEY_SHOW_ANSWER, answerVisible);
-        outState.putBoolean(KEY_SELECTION, mcAnswer1.isChecked());
+        outState.putBoolean(KEY_SELECTION1, mcAnswer1.isChecked());
+        outState.putBoolean(KEY_SELECTION2, mcAnswer2.isChecked());
+        outState.putString(KEY_SELECTION1_TEXT, mcAnswer1.getText().toString());
+        outState.putString(KEY_SELECTION2_TEXT, mcAnswer2.getText().toString());
         outState.putString(KEY_EDIT_ANSWER, vocYourAnswer.getText().toString());
 
         super.onSaveInstanceState(outState);

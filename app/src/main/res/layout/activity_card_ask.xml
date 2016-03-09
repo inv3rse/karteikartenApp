@@ -99,7 +99,7 @@
                             android:id="@+id/vocedittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/TextStyle"/>
+                            style="@style/TextStyle" />
 
                         <TextView
                             android:id="@+id/titlecorrectanswer"
@@ -141,7 +141,8 @@
                                     android:id="@+id/answer1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    style="@style/TextStyle"/>
+                                    style="@style/TextStyle"
+                                    android:buttonTint="@color/colorPrimary"/>
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
@@ -164,7 +165,8 @@
                                     android:id="@+id/answer2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    style="@style/TextStyle"/>
+                                    style="@style/TextStyle"
+                                    android:buttonTint="@color/colorPrimary"/>
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
