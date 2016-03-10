@@ -43,6 +43,7 @@ public class ImportPresenter extends Presenter<ImportActivity> {
                             view.setDeck(deck);
                         }
                     }, throwable -> {
+                        throwable.printStackTrace();
                         loadFailed = true;
                         ImportActivity view = getView();
                         if (view != null) {

@@ -69,7 +69,7 @@ public class ImExporter
         return file;
     }
 
-    private Gson buildGson()
+    static public Gson buildGson()
     {
         return new GsonBuilder()
                 .setExclusionStrategies(new ExclusionStrategy()

@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.db.ImExporter;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.online.IcasyApi;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.online.OnlineMapper;
 import io.realm.Realm;
@@ -53,19 +54,7 @@ public class AppModule {
 
     @Provides
     public Gson provideRealmGson() {
-        return new GsonBuilder()
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        return false;
-                    }
-                })
-                .create();
+        return ImExporter.buildGson();
     }
 
     @Provides
