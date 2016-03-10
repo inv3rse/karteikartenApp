@@ -9,6 +9,11 @@
 
     <item android:id="@+id/action_share"
         android:title="@string/share"
+        android:icon="@drawable/ic_upload"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/action_export"
+        android:title="@string/export"
         android:icon="@drawable/ic_share"
         app:showAsAction="ifRoom" />
 
@@ -18,7 +23,4 @@
         android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_export"
-        android:title="@string/export"
-        app:showAsAction="ifRoom" />
 </menu>
