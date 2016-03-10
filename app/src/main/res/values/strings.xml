@@ -29,4 +29,5 @@
     <string name="title_correctAnswer">Correct Answer:</string>
     <string name="nextButton">Next</string>
     <string name="export">export</string>
+    <string name="title_activity_import">ImportActivity</string>
 </resources>

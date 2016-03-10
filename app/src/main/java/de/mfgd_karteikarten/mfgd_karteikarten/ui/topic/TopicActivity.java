@@ -151,7 +151,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-        shareIntent.setType("text/*");
+        shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, "select share method"));
     }
 
