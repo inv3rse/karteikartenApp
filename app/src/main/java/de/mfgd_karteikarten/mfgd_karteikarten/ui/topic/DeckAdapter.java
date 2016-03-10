@@ -78,6 +78,16 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         return decks.size();
     }
 
+   public Deck getDeck (String name, List<Deck> decks)
+   {
+           for(Deck deck: decks){
+               if(name.equals(deck.getName())){
+                   return deck;
+               }
+           }
+       return null;
+   }
+
     void setDecks(List<Deck> decks) {
         this.decks = decks;
         selection.clear();
@@ -150,6 +160,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
     public void setItemClickedListener(OnItemClicked itemClickedListener) {
         this.itemClickedListener = itemClickedListener;
     }
+
 
     public interface OnSelectionChanged {
         void onSelectionChanged(HashSet<Integer> selection);

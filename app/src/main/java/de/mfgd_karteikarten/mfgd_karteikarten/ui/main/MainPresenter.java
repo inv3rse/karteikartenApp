@@ -100,6 +100,7 @@ public class MainPresenter extends Presenter<MainActivity> {
         MainActivity view = getView();
         if (view != null) {
             view.startTopicActivity(topics.get(position).getID());
+
         }
     }
 

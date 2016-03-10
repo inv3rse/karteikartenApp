@@ -2,21 +2,27 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxMenuItem;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -158,8 +164,102 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                     }
                 });
 
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        if (searchView == null) {
+            Log.d("tag", "Failed to get search view");
+        }
+
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+
+        final MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                showList("");
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                showList(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // showList(newText);
+                showList(newText);
+                return false;
+            }
+        });
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_swap:
+                getPresenter().switchMode(this);
+                return true;
+            case R.id.action_import:
+                showFileChooser();
+                return true;
+            case R.id.action_search:
+                Intent intent = getIntent();
+                if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                    String query = intent.getStringExtra(SearchManager.QUERY);
+                    showList(query);
+                    return true;
+                }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra((SearchManager.QUERY));
+            showList(query);
+            Log.d("TopicAcitivity", "searchQuery:" + query);
+        }
+    }
+
+    private void showList(String newText) {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.decklist);
+        recyclerView.setVisibility(View.VISIBLE);
+        int itemCount = adapter.getItemCount();
+
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            Deck deck = adapter.getDeck(i);
+            View view = recyclerView.getChildAt(i);
+
+            if (newText.equals(adapter.getDeck(i).getName())) {
+
+                Toast.makeText(this, adapter.getDeck(i).getName() + "gut", Toast.LENGTH_SHORT).show();
+                view.setVisibility(View.INVISIBLE);
+
+
+            }
+            Toast.makeText(this, "leer", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
 
     @Override
     protected void onPause() {
@@ -177,21 +277,6 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_swap:
-                getPresenter().switchMode(this);
-                return true;
-            case R.id.action_import:
-                showFileChooser();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void onSelectionChanged(HashSet<Integer> selection) {
         setLearnButtonAction(!selection.isEmpty());
@@ -295,4 +380,6 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         this.adapter.clearSelection();
         this.actionMode = null;
     }
+
+
 }
