@@ -56,6 +56,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     private int deckId;
     private boolean isMultipleSelection;
     private Toolbar toolbar;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         adapter.setSelectionChangedListener(this::onSelectionChanged);
         adapter.setItemClickedListener(position -> getPresenter().showDeck(position));
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.decklist);
+        recyclerView = (RecyclerView) findViewById(R.id.decklist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -239,24 +240,29 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         }
     }
 
-    private void showList(String newText) {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.decklist);
-        recyclerView.setVisibility(View.VISIBLE);
-        int itemCount = adapter.getItemCount();
+    private void showList(String searchText) {
 
-        for (int i = 0; i < adapter.getItemCount(); i++) {
-            Deck deck = adapter.getDeck(i);
-            View view = recyclerView.getChildAt(i);
-
-            if (newText.equals(adapter.getDeck(i).getName())) {
-
-                Toast.makeText(this, adapter.getDeck(i).getName() + "gut", Toast.LENGTH_SHORT).show();
-                view.setVisibility(View.INVISIBLE);
-
-
+        // alle elemente anzeigen wenn keine suche
+        if (searchText.isEmpty())
+        {
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                recyclerView.getChildAt(i).setVisibility(View.VISIBLE);
             }
-            Toast.makeText(this, "leer", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                Deck deck = adapter.getDeck(i);
+                View view = recyclerView.getChildAt(i);
 
+                if (deck.getName().contains(searchText)) {
+                    view.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    view.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
