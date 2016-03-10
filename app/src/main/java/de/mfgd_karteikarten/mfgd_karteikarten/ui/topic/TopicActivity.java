@@ -135,7 +135,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         startActivityForResult(intent, REQUEST_FILE);
     }
 
-    public void startShareIntent(File file) {
+    public void startExportIntent(File file) {
 //        Uri contentUri = FileProvider.getUriForFile(this, "de.mfgd_karteikarten.fileprovider", file);
         Uri contentUri = Uri.fromFile(file);
 
@@ -144,6 +144,14 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         shareIntent.putExtra(Intent.EXTRA_TEXT, "deckExport.json");
         shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
         shareIntent.setType("*/*");
+        startActivity(Intent.createChooser(shareIntent, "select share method"));
+    }
+
+    public void startShareIntent(String shareText) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        shareIntent.setType("text/*");
         startActivity(Intent.createChooser(shareIntent, "select share method"));
     }
 
@@ -200,9 +208,6 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 return true;
             case R.id.action_swap:
                 getPresenter().switchMode(this);
-                return true;
-            case R.id.action_import:
-                showFileChooser();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -298,9 +303,12 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                     return true;
                 }
                 break;
+            case R.id.action_export:
+                getPresenter().exportSelected(adapter.getSelection(), this);
+                return true;
             case R.id.action_share:
                 getPresenter().shareSelected(adapter.getSelection(), this);
-                return true;
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

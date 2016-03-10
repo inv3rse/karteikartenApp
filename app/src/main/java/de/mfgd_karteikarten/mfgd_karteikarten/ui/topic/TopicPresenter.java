@@ -1,6 +1,7 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
 import android.util.Log;
+import android.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,20 +15,31 @@ import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.db.ImExporter;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.db.TopicEditor;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.online.IcasyApi;
+import de.mfgd_karteikarten.mfgd_karteikarten.base.online.OnlineMapper;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
 @ActivityScope
 public class TopicPresenter extends Presenter<TopicActivity> {
+    private OnlineMapper onlineMapper;
+    private IcasyApi api;
+
     private TopicEditor editor;
     private List<Deck> decks;
     private HashSet<Integer> savedSelection;
     private boolean inTestMode;
 
     @Inject
-    public TopicPresenter(TopicEditor editor) {
+    public TopicPresenter(TopicEditor editor, OnlineMapper onlineMapper, IcasyApi api) {
         this.editor = editor;
+        this.onlineMapper = onlineMapper;
+        this.api = api;
         inTestMode = false;
     }
 
@@ -108,7 +120,7 @@ public class TopicPresenter extends Presenter<TopicActivity> {
         }
     }
 
-    public void shareSelected(HashSet<Integer> selection, TopicActivity view) {
+    public void exportSelected(HashSet<Integer> selection, TopicActivity view) {
         ImExporter exporter = new ImExporter();
         ArrayList<Deck> exportDecks = new ArrayList<>();
 
@@ -118,10 +130,33 @@ public class TopicPresenter extends Presenter<TopicActivity> {
 
         try {
             File exportFile = exporter.exportDecks(exportDecks, new File(view.getExternalFilesDir(null), "decks"));
-            view.startShareIntent(exportFile);
+            view.startExportIntent(exportFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void shareSelected(HashSet<Integer> selection, TopicActivity view) {
+        ImExporter exporter = new ImExporter();
+        ArrayList<Deck> shareDecks = new ArrayList<>();
+
+        for (int index : selection) {
+            shareDecks.add(decks.get(index));
+        }
+
+        Observable.from(shareDecks)
+                .flatMap(deck -> Observable.zip(api.createDeck(deck), Observable.just(deck), (id, deck1) -> new Pair<>(deck1, id)))
+                .collect((Func0<ArrayList<Pair<Deck,String>>>) ArrayList::new, ArrayList::add)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pairList -> {
+                    String shareString = "";
+                    for (Pair<Deck, String> pair : pairList) {
+                        onlineMapper.addMapping(pair.first.getID(), pair.second);
+                        shareString = shareString + pair.first.getName() + ": https://icasy-pro.herokuapp.com/deck/" + pair.second + "\n";
+                    }
+                    view.startShareIntent(shareString);
+                }, Throwable::printStackTrace);
     }
 
     public void importDecks(String fileString, TopicActivity view) {
