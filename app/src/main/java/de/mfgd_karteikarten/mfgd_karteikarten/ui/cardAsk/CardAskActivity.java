@@ -187,7 +187,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
                     gradeCard = true;
                     putScore();
                     showScore();
-                    Toast.makeText(getApplicationContext(), "you agreed to the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "your answer is correct", Toast.LENGTH_SHORT).show();
 
                     getPresenter().gradeCard(true);
                     return false;
@@ -201,7 +201,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
                     gradeCard = false;
                     putScore();
                     showScore();
-                    Toast.makeText(getApplicationContext(), "you disagreed with the answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "your answer is wrong", Toast.LENGTH_SHORT).show();
 
                     getPresenter().gradeCard(false);
                     return false;
@@ -212,8 +212,8 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
             public boolean onSwipeBottom(){
                 //es wurde nach unten gewischt
                 if (View.VISIBLE == antwortText.getVisibility()) {
-                    Toast.makeText(getApplicationContext(), "swipe to the right = you agree with the statement" +
-                            "\nswipe to the left = you disagree with the statement" +
+                    Toast.makeText(getApplicationContext(), "swipe to the right = your answer is correct" +
+                            "\nswipe to the left = your answer is wrong" +
                             "\nswipe down = information", Toast.LENGTH_LONG).show();
 
                     return false;
