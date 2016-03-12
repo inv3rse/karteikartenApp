@@ -31,7 +31,7 @@ public class TestAssistant implements LearnInterface {
     @Override
     public Card getCard(int i)
     {
-        return cards.get(i);
+        return currentCard;
 
     }
 

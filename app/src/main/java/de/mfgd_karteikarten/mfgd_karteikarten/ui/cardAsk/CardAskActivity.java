@@ -152,16 +152,16 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
         }
 
         bewertenButton1.setOnClickListener(v -> {
-            getPresenter().gradeCard(false);
             gradeCard = false;
             putScore();
             showScore();
+            getPresenter().gradeCard(false);
         });
         bewertenButton2.setOnClickListener(v -> {
-            getPresenter().gradeCard(true);
             gradeCard = true;
             putScore();
             showScore();
+            getPresenter().gradeCard(true);
         });
         zeigeAntwortButton.setOnClickListener(v -> {
             getPresenter().zeigeAntwort();
@@ -434,7 +434,7 @@ public class CardAskActivity extends NucleusAppCompatActivity<CardAskPresenter> 
     public void showFinishedDialog() {
         AlertDialog.Builder msg = new AlertDialog.Builder(this);
         msg.setTitle("Alert");
-        msg.setMessage("No more cards!  "+Integer.toString(rightanswer)+"/"+Integer.toString(count));
+        msg.setMessage("No more cards! Score: "+Integer.toString(rightanswer)+"/"+Integer.toString(count));
         msg.setCancelable(true);
         msg.setPositiveButton(android.R.string.ok, (dialog, which) -> this.finish());
         msg.create().show();
