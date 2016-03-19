@@ -171,7 +171,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         shareIntent.putExtra(Intent.EXTRA_TEXT, "deckExport.json");
         shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
         shareIntent.setType("*/*");
-        startActivity(Intent.createChooser(shareIntent, "select share method"));
+        startActivity(Intent.createChooser(shareIntent, "select save method"));
     }
 
     public void startShareIntent(String shareText)
