@@ -2,7 +2,6 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.cardEdit;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,7 +12,8 @@ import de.mfgd_karteikarten.mfgd_karteikarten.base.App;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Card;
 import nucleus.view.NucleusAppCompatActivity;
 
-public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter> {
+public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter>
+{
 
     public static final String CARD_EXTRA = "CARD_EXTRA";
     public static final String DECK_EXTRA = "DECK_EXTRA";
@@ -27,7 +27,8 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
     private RadioButton mcView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_edit);
 
@@ -37,8 +38,8 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
             int deckId = extras.getInt(DECK_EXTRA);
             int cardId = extras.getInt(CARD_EXTRA, Card.UNKNOWN_ID);
             setPresenterFactory(new CardEditPresenter.Factory(App.get(this), deckId, cardId));
-        }
-        else {
+        } else
+        {
             Log.e("CardEditActivity", "gestartet ohne Extra");
             finish();
         }
@@ -72,7 +73,7 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
 
     public void switchView()
     {
-        if(mcView.isChecked())
+        if (mcView.isChecked())
         {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(findViewById(R.id.mcview)));
         } else
@@ -83,14 +84,14 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
 
     public void setCard(Card card)
     {
-        if(card.getType() == 3)
+        if (card.getType() == 3)
         {
             questionEdit.setText(card.getQuestion());
             correctAnswerText.setText(card.getAnswer());
             falseAnswerText.setText(card.getFalseanswer());
             mcView.setChecked(true);
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(findViewById(R.id.mcview)));
-        } else if(card.getType() == 2)
+        } else if (card.getType() == 2)
         {
             questionEdit.setText(card.getQuestion());
             answerText.setText(card.getAnswer());
@@ -106,7 +107,7 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
     public void saveCard()
     {
         int type;
-        if(mcView.isChecked())
+        if (mcView.isChecked())
         {
             type = 3;
             getPresenter().saveCard(
@@ -114,14 +115,15 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
                     questionEdit.getText().toString(),
                     correctAnswerText.getText().toString(),
                     falseAnswerText.getText().toString());
-        } else if(vocabView.isChecked())
+        } else if (vocabView.isChecked())
         {
             type = 2;
             getPresenter().saveCard(
                     type,
                     questionEdit.getText().toString(),
                     answerText.getText().toString());
-        } else {
+        } else
+        {
             type = 1;
             getPresenter().saveCard(
                     type,
@@ -134,7 +136,7 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
     public void updateCard()
     {
         int type;
-        if(mcView.isChecked())
+        if (mcView.isChecked())
         {
             type = 3;
             getPresenter().updateCard(
@@ -142,14 +144,15 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
                     questionEdit.getText().toString(),
                     correctAnswerText.getText().toString(),
                     falseAnswerText.getText().toString());
-        } else if(vocabView.isChecked())
+        } else if (vocabView.isChecked())
         {
             type = 2;
             getPresenter().updateCard(
                     type,
                     questionEdit.getText().toString(),
                     answerText.getText().toString());
-        } else {
+        } else
+        {
             type = 1;
             getPresenter().updateCard(
                     type,
@@ -165,7 +168,8 @@ public class CardEditActivity extends NucleusAppCompatActivity<CardEditPresenter
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         updateCard();
         super.onPause();
     }

@@ -1,7 +1,6 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.importDeck;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,7 +19,8 @@ import de.mfgd_karteikarten.mfgd_karteikarten.data.Deck;
 import de.mfgd_karteikarten.mfgd_karteikarten.data.Topic;
 import nucleus.view.NucleusAppCompatActivity;
 
-public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter> {
+public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter>
+{
 
     private ProgressDialog loadingDialog;
     private Spinner topicSpinner;
@@ -28,7 +28,8 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter> {
     private TextView num_cards;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         String importUrl = getIntent().getData().toString();
@@ -44,14 +45,17 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter> {
         setSupportActionBar(toolbar);
 
         topicSpinner = (Spinner) findViewById(R.id.topic_select_spinner);
-        topicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        topicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 getPresenter().onTopicSelected(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });
@@ -74,8 +78,7 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter> {
             {
                 loadingDialog = ProgressDialog.show(this, "loading", "loading deck from Server");
             }
-        }
-        else if (loadingDialog != null)
+        } else if (loadingDialog != null)
         {
             loadingDialog.cancel();
         }

@@ -3,7 +3,6 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,9 +11,6 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +34,8 @@ import de.mfgd_karteikarten.mfgd_karteikarten.ui.deck.DeckActivity;
 import nucleus.view.NucleusAppCompatActivity;
 import rx.Observable;
 
-public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements ActionMode.Callback {
+public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> implements ActionMode.Callback
+{
     public static final String TOPIC_EXTRA = "TOPIC_EXTRA";
     private static final String KEY_DECK_DIALOG_VISIBLE = "TOPIC_DIALOG_VISIBLE";
     private static final String KEY_DECK_DIALOG_NAME = "TOPIC_DIALOG_NAME";
@@ -56,23 +53,28 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     private Toolbar toolbar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
 
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey(TOPIC_EXTRA)) {
+        if (extras.containsKey(TOPIC_EXTRA))
+        {
             int topicID = extras.getInt(TOPIC_EXTRA);
             setPresenterFactory(new TopicPresenter.Factory(App.get(this), topicID));
-        } else {
+        } else
+        {
             Log.e("TopicActivity", "gestartet ohne Topic als Extra");
             finish();
         }
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             createTopicDialogVisible = savedInstanceState.getBoolean(KEY_DECK_DIALOG_VISIBLE);
             deckId = savedInstanceState.getInt(KEY_DECK_DIALOG_ID, Deck.UNKNOWN_ID);
-            if (createTopicDialogVisible) {
+            if (createTopicDialogVisible)
+            {
                 showCreateTopicDialog(deckId);
                 topicName.setText(savedInstanceState.getString(KEY_DECK_DIALOG_NAME, ""));
             }
@@ -81,7 +83,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {
+        if (getSupportActionBar() != null)
+        {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -100,42 +103,50 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         setLearnButtonAction(false);
     }
 
-    public void setTopicTitle(String name) {
+    public void setTopicTitle(String name)
+    {
         toolbar.setTitle(name);
     }
 
-    public void setDecks(List<Deck> decks) {
+    public void setDecks(List<Deck> decks)
+    {
         adapter.setDecks(decks);
     }
 
-    public void addDeck(Deck deck) {
+    public void addDeck(Deck deck)
+    {
         adapter.addDeck(deck);
     }
 
-    public void setSelection(HashSet<Integer> selection) {
+    public void setSelection(HashSet<Integer> selection)
+    {
         adapter.setSelection(selection);
     }
 
-    public void startCardAskActivity(ArrayList<Integer> deckIds, boolean inTestMode) {
+    public void startCardAskActivity(ArrayList<Integer> deckIds, boolean inTestMode)
+    {
         Intent intent = new Intent(this, CardAskActivity.class);
         intent.putIntegerArrayListExtra(CardAskActivity.CARDASK_EXTRA_DECKS, deckIds);
         intent.putExtra(CardAskActivity.CARDASK_EXTRA_LEARNMODE, inTestMode);
         startActivity(intent);
     }
 
-    public void startDeckActivity(int deckId) {
+    public void startDeckActivity(int deckId)
+    {
         Intent intent = new Intent(this, DeckActivity.class);
         intent.putExtra(DeckActivity.DECK_EXTRA, deckId);
         startActivity(intent);
     }
 
-    public void showFileChooser() {
+    public void showFileChooser()
+    {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("file/*");
         startActivityForResult(intent, REQUEST_FILE);
     }
 
-    public void startExportIntent(File file) {
+    public void startExportIntent(File file)
+    {
 //        Uri contentUri = FileProvider.getUriForFile(this, "de.mfgd_karteikarten.fileprovider", file);
         Uri contentUri = Uri.fromFile(file);
 
@@ -147,7 +158,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         startActivity(Intent.createChooser(shareIntent, "select share method"));
     }
 
-    public void startShareIntent(String shareText) {
+    public void startShareIntent(String shareText)
+    {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
@@ -156,7 +168,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.topic_activity, menu);
 
@@ -165,7 +178,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         RxPermissions.getInstance(this)
                 .request(importClicked, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
-                    if (granted) {
+                    if (granted)
+                    {
                         showFileChooser();
                     }
                 });
@@ -174,15 +188,18 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         getPresenter().closeWithSelection(adapter.getSelection());
         super.onPause();
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState)
+    {
         outState.putBoolean(KEY_DECK_DIALOG_VISIBLE, createTopicDialogVisible);
-        if (createTopicDialogVisible) {
+        if (createTopicDialogVisible)
+        {
             outState.putString(KEY_DECK_DIALOG_NAME, topicName.getText().toString());
             outState.putInt(KEY_DECK_DIALOG_ID, deckId);
         }
@@ -190,8 +207,10 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case android.R.id.home:
                 finish();
                 return true;
@@ -202,36 +221,45 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
         return super.onOptionsItemSelected(item);
     }
 
-    private void onSelectionChanged(HashSet<Integer> selection) {
+    private void onSelectionChanged(HashSet<Integer> selection)
+    {
         setLearnButtonAction(!selection.isEmpty());
 
         boolean wasMultiple = isMultipleSelection;
         isMultipleSelection = selection.size() > 1;
 
-        if (!selection.isEmpty()) {
-            if (actionMode == null) {
+        if (!selection.isEmpty())
+        {
+            if (actionMode == null)
+            {
                 actionMode = startSupportActionMode(this);
-            } else if (wasMultiple != isMultipleSelection) {
+            } else if (wasMultiple != isMultipleSelection)
+            {
                 actionMode.invalidate();
             }
 
             actionMode.setTitle(getString(R.string.selection_title, selection.size()));
-        } else if (actionMode != null) {
+        } else if (actionMode != null)
+        {
             actionMode.finish();
         }
     }
 
-    private void setLearnButtonAction(boolean inSelectionMode) {
-        if (inSelectionMode) {
+    private void setLearnButtonAction(boolean inSelectionMode)
+    {
+        if (inSelectionMode)
+        {
             learnButton.setText(R.string.learn_selected);
             learnButton.setOnClickListener(v -> getPresenter().learnSelected(adapter.getSelection()));
-        } else {
+        } else
+        {
             learnButton.setText(R.string.learn_all);
             learnButton.setOnClickListener(v -> getPresenter().learnAll());
         }
     }
 
-    private void showCreateTopicDialog(int deckId) {
+    private void showCreateTopicDialog(int deckId)
+    {
         this.deckId = deckId;
         createTopicDialogVisible = true;
         topicName = new EditText(this);
@@ -241,9 +269,11 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
                 .setView(topicName)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     createTopicDialogVisible = false;
-                    if (deckId != Deck.UNKNOWN_ID) {
+                    if (deckId != Deck.UNKNOWN_ID)
+                    {
                         getPresenter().renameDeck(deckId, topicName.getText().toString());
-                    } else {
+                    } else
+                    {
                         getPresenter().addDeck(topicName.getText().toString());
                     }
                 })
@@ -255,16 +285,19 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK)
+        {
             getPresenter().importDecks(data.getData().getPath(), this);
         }
     }
 
     @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    public boolean onCreateActionMode(ActionMode mode, Menu menu)
+    {
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.topic_activity_context, menu);
 
@@ -272,19 +305,23 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu)
+    {
         menu.getItem(0).setVisible(!isMultipleSelection);
         return true;
     }
 
     @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.action_delete:
                 getPresenter().deleteDecks(adapter.getSelection());
                 return true;
             case R.id.action_edit:
-                if (adapter.getSelection().size() == 1) {
+                if (adapter.getSelection().size() == 1)
+                {
                     int pos = adapter.getSelection().iterator().next();
                     Deck deck = adapter.getDeck(pos);
                     showCreateTopicDialog(deck.getID());
@@ -303,7 +340,8 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    public void onDestroyActionMode(ActionMode mode) {
+    public void onDestroyActionMode(ActionMode mode)
+    {
         this.adapter.clearSelection();
         this.actionMode = null;
     }

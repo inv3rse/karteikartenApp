@@ -2,10 +2,7 @@ package de.mfgd_karteikarten.mfgd_karteikarten.base;
 
 import android.app.Application;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
@@ -16,29 +13,32 @@ import de.mfgd_karteikarten.mfgd_karteikarten.base.online.IcasyApi;
 import de.mfgd_karteikarten.mfgd_karteikarten.base.online.OnlineMapper;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmObject;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
 @Module
-public class AppModule {
+public class AppModule
+{
 
     Application mApplication;
 
-    public AppModule(Application application) {
+    public AppModule(Application application)
+    {
         this.mApplication = application;
     }
 
     @Provides
     @Singleton
-    public Application provideApplication() {
+    public Application provideApplication()
+    {
         return mApplication;
     }
 
     @Provides
     @Singleton
-    public Realm provideRealm(Application application) {
+    public Realm provideRealm(Application application)
+    {
         return Realm.getInstance(
                 new RealmConfiguration.Builder(application)
                         .name("dataStore")
@@ -53,13 +53,15 @@ public class AppModule {
     }
 
     @Provides
-    public Gson provideRealmGson() {
+    public Gson provideRealmGson()
+    {
         return ImExporter.buildGson();
     }
 
     @Provides
     @Singleton
-    public IcasyApi provideApi(Gson gson) {
+    public IcasyApi provideApi(Gson gson)
+    {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://icasy-pro.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
