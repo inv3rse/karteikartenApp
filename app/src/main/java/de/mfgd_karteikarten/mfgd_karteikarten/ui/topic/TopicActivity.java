@@ -156,17 +156,6 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        for (int i=0; i<menu.size(); i++) {
-            MenuItem mi = menu.getItem(i);
-            String title = mi.getTitle().toString();
-            Spannable newTitle = new SpannableString(title);
-            newTitle.setSpan(new ForegroundColorSpan(Color.BLACK), 0, newTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            mi.setTitle(newTitle);
-        }
-        return true;
-    }
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.topic_activity, menu);
