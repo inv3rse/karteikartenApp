@@ -2,6 +2,7 @@ package de.mfgd_karteikarten.mfgd_karteikarten.ui.topic;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     private int deckId;
     private boolean isMultipleSelection;
     private Toolbar toolbar;
+    private ProgressDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -121,6 +123,20 @@ public class TopicActivity extends NucleusAppCompatActivity<TopicPresenter> impl
     public void setSelection(HashSet<Integer> selection)
     {
         adapter.setSelection(selection);
+    }
+
+    public void showLoading(boolean loading)
+    {
+        if (loading)
+        {
+            if (loadingDialog == null)
+            {
+                loadingDialog = ProgressDialog.show(this, "loading", "publishing decks");
+            }
+        } else if (loadingDialog != null)
+        {
+            loadingDialog.cancel();
+        }
     }
 
     public void startCardAskActivity(ArrayList<Integer> deckIds, boolean inTestMode)
