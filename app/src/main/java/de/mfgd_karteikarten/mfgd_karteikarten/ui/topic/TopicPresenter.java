@@ -173,20 +173,23 @@ public class TopicPresenter extends Presenter<TopicActivity>
             view.showLoading(true);
 
             ArrayList<Deck> shareDecks = new ArrayList<>();
-            ArrayList<Pair<Deck, String>> alreadyOnline = new ArrayList<>();
+//            ArrayList<Pair<Deck, String>> alreadyOnline = new ArrayList<>();
 
             for (int index : selection)
             {
-                Deck deck = decks.get(index);
-                String id = onlineMapper.getOnlineMapping(deck.getID());
+//                Deck deck = decks.get(index);
+//                String id = onlineMapper.getOnlineMapping(deck.getID());
+//
+//                if (id != null)
+//                {
+//                    alreadyOnline.add(new Pair<>(deck, id));
+//                } else
+//                {
+//                    shareDecks.add(deck);
+//                }
 
-                if (id != null)
-                {
-                    alreadyOnline.add(new Pair<>(deck, id));
-                } else
-                {
-                    shareDecks.add(deck);
-                }
+                Deck deck = decks.get(index);
+                shareDecks.add(deck);
             }
 
             Observable.from(shareDecks)
@@ -195,7 +198,7 @@ public class TopicPresenter extends Presenter<TopicActivity>
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(pairList -> {
-                                pairList.addAll(alreadyOnline);
+//                                pairList.addAll(alreadyOnline);
 
                                 String shareString = "";
                                 for (Pair<Deck, String> pair : pairList)
