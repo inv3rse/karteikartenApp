@@ -30,4 +30,6 @@
     <string name="nextButton">Next</string>
     <string name="export">export</string>
     <string name="title_activity_import">ImportActivity</string>
+    <string name="import_deck_label">import Deck:</string>
+    <string name="selected_topic_label">add to topic:</string>
 </resources>

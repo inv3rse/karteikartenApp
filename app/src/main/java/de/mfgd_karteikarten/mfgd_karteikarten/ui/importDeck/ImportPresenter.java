@@ -1,5 +1,7 @@
 package de.mfgd_karteikarten.mfgd_karteikarten.ui.importDeck;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import de.mfgd_karteikarten.mfgd_karteikarten.base.ActivityScope;
@@ -21,6 +23,7 @@ public class ImportPresenter extends Presenter<ImportActivity> {
     private Realm realm;
     private String importId;
 
+    private List<Topic> topics;
     private boolean loadFailed = false;
     private int selectedTopic = 0;
     private Deck loadedDeck = null;
@@ -39,19 +42,22 @@ public class ImportPresenter extends Presenter<ImportActivity> {
                     .subscribe(deck -> {
                         loadedDeck = deck;
                         ImportActivity view = getView();
-                        if (view != null) {
+                        if (view != null)
+                        {
                             view.setDeck(deck);
                         }
                     }, throwable -> {
                         throwable.printStackTrace();
                         loadFailed = true;
                         ImportActivity view = getView();
-                        if (view != null) {
+                        if (view != null)
+                        {
                             view.closeActivity();
                         }
                     }, () -> {
                         ImportActivity view = getView();
-                        if (view != null) {
+                        if (view != null)
+                        {
                             view.showLoading(false);
                         }
                     });
@@ -65,7 +71,8 @@ public class ImportPresenter extends Presenter<ImportActivity> {
         if (importId == null || loadFailed) {
             importActivity.closeActivity();
         } else {
-            importActivity.setTopicOptions(topicManager.getTopics(), selectedTopic);
+            topics = topicManager.getTopics();
+            importActivity.setTopicOptions(topics, selectedTopic);
 
             if (loadedDeck == null) {
                 importActivity.showLoading(true);
@@ -75,13 +82,27 @@ public class ImportPresenter extends Presenter<ImportActivity> {
         }
     }
 
-    public void onTopicSelected(int pos) {
+    public void onTopicSelected(int pos, ImportActivity view) {
         selectedTopic = pos;
+        view.showNewTopic(selectedTopic >= topics.size());
     }
 
     public void onOk(ImportActivity view) {
-        if (loadedDeck != null && topicManager.getTopics().size() > 0) {
-            Topic topic = topicManager.getTopics().get(selectedTopic);
+        boolean newTopic = selectedTopic >= topics.size();
+
+        if (loadedDeck != null && (!newTopic || !view.getNewTopicName().isEmpty())){
+
+            Topic topic;
+
+            if (newTopic)
+            {
+                topic = topicManager.addTopic(new Topic(view.getNewTopicName()));
+            }
+            else
+            {
+                topic = topicManager.getTopics().get(selectedTopic);
+            }
+
             TopicEditor editor = new TopicEditor(realm, topic);
             editor.addDeck(loadedDeck);
 

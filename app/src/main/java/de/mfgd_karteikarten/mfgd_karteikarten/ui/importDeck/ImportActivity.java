@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter>
     private Spinner topicSpinner;
     private TextView deckName;
     private TextView num_cards;
+    private EditText newTopicName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,7 +52,7 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter>
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                getPresenter().onTopicSelected(position);
+                getPresenter().onTopicSelected(position, ImportActivity.this);
             }
 
             @Override
@@ -68,6 +70,7 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter>
 
         num_cards = (TextView) findViewById(R.id.deck_num_cards);
         deckName = (TextView) findViewById(R.id.deck_name);
+        newTopicName = (EditText) findViewById(R.id.new_topic_name);
     }
 
     public void showLoading(boolean loading)
@@ -92,19 +95,30 @@ public class ImportActivity extends NucleusAppCompatActivity<ImportPresenter>
 
     public void setTopicOptions(List<Topic> topics, int selection)
     {
-        String topicList[] = new String[topics.size()];
+        String topicList[] = new String[topics.size() + 1];
         for (int i = 0; i < topics.size(); ++i)
         {
             topicList[i] = topics.get(i).getName();
         }
 
+        topicList[topics.size()] = "create new topic";
+
         topicSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, topicList));
         topicSpinner.setSelection(selection);
+    }
+
+    public void showNewTopic(boolean isVisible)
+    {
+        newTopicName.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public String getNewTopicName()
+    {
+        return newTopicName.getText().toString();
     }
 
     public void closeActivity()
     {
         finish();
     }
-
 }
