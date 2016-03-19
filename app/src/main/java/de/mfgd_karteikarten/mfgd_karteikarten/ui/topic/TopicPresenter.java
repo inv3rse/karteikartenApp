@@ -137,7 +137,6 @@ public class TopicPresenter extends Presenter<TopicActivity> {
     }
 
     public void shareSelected(HashSet<Integer> selection, TopicActivity view) {
-        ImExporter exporter = new ImExporter();
         ArrayList<Deck> shareDecks = new ArrayList<>();
 
         for (int index : selection) {
