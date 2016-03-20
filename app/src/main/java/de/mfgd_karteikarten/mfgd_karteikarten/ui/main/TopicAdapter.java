@@ -51,6 +51,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.ViewHolder> 
         for (int i = 0; i < Math.min(topic.getDecks().size(), 3); ++i) {
             Button button = new Button(context);
             button.setText(topic.getDecks().get(i).getName());
+            button.setClickable(false);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
